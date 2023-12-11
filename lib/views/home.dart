@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:itu/categories.dart';
-import 'package:itu/favorites.dart';
-import 'package:itu/search.dart';
-import 'package:itu/user.dart';
+import 'package:itu/views/categories.dart';
+import 'package:itu/views/favorites.dart';
+import 'package:itu/views/search.dart';
+import 'package:itu/views/user.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -132,7 +132,7 @@ class _HomeContentState extends State<HomeContent> {
               ),
             ),
             Container(
-              //width: 314,
+              width: 340,
               height: 186,
               padding: const EdgeInsets.only(
                 top: 116,
@@ -164,7 +164,7 @@ class _HomeContentState extends State<HomeContent> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 234,
+                    width: 230,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
