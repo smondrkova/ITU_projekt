@@ -11,25 +11,23 @@ class _CategoriesPageState extends State<CategoriesPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 360,
+      width: 365,
       height: 1190,
       clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(color: Colors.black),
       child: Stack(
         children: [
           Positioned(
-            left: 0,
+            left: 25,
             top: 98,
             child: SizedBox(
-              width: 360,
-              height: 1055,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    width: 314,
+                    width: 345,
                     height: 132,
                     decoration: const BoxDecoration(
                       boxShadow: [
@@ -47,7 +45,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                           left: 0,
                           top: 0,
                           child: Container(
-                            width: 314,
+                            width: 340,
                             height: 132,
                             decoration: ShapeDecoration(
                               image: const DecorationImage(
@@ -82,329 +80,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     ),
                   ),
                   const SizedBox(height: 19),
-                  Container(
-                    width: 314,
-                    height: 132,
-                    decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0x3F000000),
-                          blurRadius: 4,
-                          offset: Offset(0, 4),
-                          spreadRadius: 0,
-                        )
-                      ],
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 0,
-                          top: 0,
-                          child: Container(
-                            width: 314,
-                            height: 132,
-                            decoration: ShapeDecoration(
-                              image: const DecorationImage(
-                                image: AssetImage('assets/placeholder.png'),
-                                fit: BoxFit.fill,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Positioned(
-                          left: 27,
-                          top: 16,
-                          child: SizedBox(
-                            width: 189,
-                            height: 48,
-                            child: Text(
-                              'Párty a nočný život',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w700,
-                                height: 0,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 19),
-                  Container(
-                    width: 314,
-                    height: 132,
-                    decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0x3F000000),
-                          blurRadius: 4,
-                          offset: Offset(0, 4),
-                          spreadRadius: 0,
-                        )
-                      ],
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 0,
-                          top: 0,
-                          child: Container(
-                            width: 314,
-                            height: 132,
-                            decoration: ShapeDecoration(
-                              image: const DecorationImage(
-                                image: AssetImage('assets/placeholder.png'),
-                                fit: BoxFit.fill,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Positioned(
-                          left: 27,
-                          top: 16,
-                          child: SizedBox(
-                            width: 189,
-                            height: 48,
-                            child: Text(
-                              'Kultúra a Umenie',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w700,
-                                height: 0,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 19),
-                  Container(
-                    width: 314,
-                    height: 132,
-                    decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0x3F000000),
-                          blurRadius: 4,
-                          offset: Offset(0, 4),
-                          spreadRadius: 0,
-                        )
-                      ],
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 0,
-                          top: 0,
-                          child: Container(
-                            width: 314,
-                            height: 132,
-                            decoration: ShapeDecoration(
-                              image: const DecorationImage(
-                                image: AssetImage('assets/placeholder.png'),
-                                fit: BoxFit.fill,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Positioned(
-                          left: 27,
-                          top: 16,
-                          child: SizedBox(
-                            width: 189,
-                            height: 48,
-                            child: Text(
-                              'Kvízy a hry',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w700,
-                                height: 0,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 19),
-                  Container(
-                    width: 314,
-                    height: 132,
-                    decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0x3F000000),
-                          blurRadius: 4,
-                          offset: Offset(0, 4),
-                          spreadRadius: 0,
-                        )
-                      ],
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 0,
-                          top: 0,
-                          child: Container(
-                            width: 314,
-                            height: 132,
-                            decoration: ShapeDecoration(
-                              image: const DecorationImage(
-                                image: AssetImage('assets/placeholder.png'),
-                                fit: BoxFit.fill,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Positioned(
-                          left: 27,
-                          top: 16,
-                          child: SizedBox(
-                            width: 189,
-                            height: 48,
-                            child: Text(
-                              'Šport',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w700,
-                                height: 0,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 19),
-                  Container(
-                    width: 314,
-                    height: 132,
-                    decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0x3F000000),
-                          blurRadius: 4,
-                          offset: Offset(0, 4),
-                          spreadRadius: 0,
-                        )
-                      ],
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 0,
-                          top: 0,
-                          child: Container(
-                            width: 314,
-                            height: 132,
-                            decoration: ShapeDecoration(
-                              image: const DecorationImage(
-                                image: AssetImage('assets/placeholder.png'),
-                                fit: BoxFit.fill,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Positioned(
-                          left: 27,
-                          top: 16,
-                          child: SizedBox(
-                            width: 189,
-                            height: 48,
-                            child: Text(
-                              'Gastronómia',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w700,
-                                height: 0,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 19),
-                  Container(
-                    width: 314,
-                    height: 132,
-                    decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0x3F000000),
-                          blurRadius: 4,
-                          offset: Offset(0, 4),
-                          spreadRadius: 0,
-                        )
-                      ],
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 0,
-                          top: 0,
-                          child: Container(
-                            width: 314,
-                            height: 132,
-                            decoration: ShapeDecoration(
-                              image: const DecorationImage(
-                                image: AssetImage('assets/placeholder.png'),
-                                fit: BoxFit.fill,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Positioned(
-                          left: 27,
-                          top: 16,
-                          child: SizedBox(
-                            width: 189,
-                            height: 48,
-                            child: Text(
-                              'Vzdelávanie',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w700,
-                                height: 0,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
             ),

@@ -22,7 +22,7 @@ class _SearchPageState extends State<SearchPage> {
             left: 25,
             top: 93,
             child: Container(
-              width: 310,
+              width: 350,
               height: 47,
               clipBehavior: Clip.antiAlias,
               decoration: ShapeDecoration(
@@ -57,7 +57,7 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ),
                   Positioned(
-                    left: 259,
+                    left: 300,
                     top: 8,
                     child: Container(
                       width: 30,

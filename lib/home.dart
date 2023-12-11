@@ -132,12 +132,12 @@ class _HomeContentState extends State<HomeContent> {
               ),
             ),
             Container(
-              width: 314,
+              //width: 314,
               height: 186,
               padding: const EdgeInsets.only(
                 top: 116,
                 left: 30,
-                right: 50,
+                right: 80,
                 bottom: 14,
               ),
               clipBehavior: Clip.antiAlias,
@@ -260,7 +260,7 @@ class _HomeContentState extends State<HomeContent> {
             ),
             const SizedBox(height: 10),
             Container(
-              width: 314,
+              width: 350,
               height: 132,
               decoration: const BoxDecoration(
                 boxShadow: [
@@ -278,7 +278,7 @@ class _HomeContentState extends State<HomeContent> {
                     left: 149,
                     top: 0,
                     child: Container(
-                      width: 165,
+                      width: 195,
                       height: 132,
                       decoration: const ShapeDecoration(
                         color: Color(0xFF3B3B3B),
@@ -295,7 +295,7 @@ class _HomeContentState extends State<HomeContent> {
                     left: 0,
                     top: 0,
                     child: Container(
-                      width: 149,
+                      width: 160,
                       height: 132,
                       decoration: const ShapeDecoration(
                         image: DecorationImage(
@@ -312,7 +312,7 @@ class _HomeContentState extends State<HomeContent> {
                     ),
                   ),
                   const Positioned(
-                    left: 162,
+                    left: 172,
                     top: 42.31,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
