@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:itu/views/categories.dart';
+import 'package:itu/views/create_event.dart';
 import 'package:itu/views/favorites.dart';
 import 'package:itu/views/search.dart';
 import 'package:itu/views/user.dart';
@@ -14,26 +15,45 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  int _selectedPage = 0;
 
-  List<Widget> screens = [
-    const HomeContent(),
-    const SearchPage(),
-    const CategoriesPage(),
-    const FavoritesPage(),
-    const UserPage(),
-  ];
+  late List<Widget> screens;
+
+  _HomePageState() {
+    screens = [
+      const HomeContent(),
+      const SearchPage(),
+      const CategoriesPage(),
+      const FavoritesPage(),
+      UserPage(
+        navigateToNewPage: navigateToNewPage,
+      ),
+      const CreateEventPage(),
+    ];
+  }
+
+  void navigateToNewPage(int index) {
+    if (index >= 0 && index < screens.length) {
+      setState(() {
+        _selectedPage = index;
+      });
+    }
+  }
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index >= 0 && index < 5) {
+      setState(() {
+        _selectedIndex = index;
+        _selectedPage = index;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: screens.elementAt(_selectedIndex),
+        child: screens.elementAt(_selectedPage),
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(8.0), // Add some padding

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:itu/views/create_event.dart';
+import 'package:itu/views/home.dart';
 
 class UserPage extends StatefulWidget {
-  const UserPage({super.key});
+  final Function navigateToNewPage;
+  UserPage({required this.navigateToNewPage, Key? key}) : super(key: key);
 
   @override
   State<UserPage> createState() => _UserPageState();
@@ -280,53 +283,52 @@ class _UserPageState extends State<UserPage> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Container(
-                      width: 328,
-                      height: 39,
-                      padding: const EdgeInsets.only(left: 35, right: 36),
-                      clipBehavior: Clip.antiAlias,
-                      decoration: ShapeDecoration(
-                        color: Colors.deepPurple,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 21, vertical: 10),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 24,
-                                  height: 24,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: const BoxDecoration(),
-                                  child: SvgPicture.asset(
-                                      "assets/icons/plus_icon.svg"),
-                                ),
-                                const SizedBox(width: 10),
-                                const Text(
-                                  'Vytvoriť nové podujatie',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w600,
-                                    height: 0,
-                                  ),
-                                ),
-                              ],
-                            ),
+                    GestureDetector(
+                      onTap: () => widget.navigateToNewPage(5),
+                      child: Container(
+                        width: 328,
+                        height: 39,
+                        padding: const EdgeInsets.only(left: 35, right: 36),
+                        clipBehavior: Clip.antiAlias,
+                        decoration: ShapeDecoration(
+                          color: Colors.deepPurple,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24),
                           ),
-                        ],
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 21, vertical: 10),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    width: 24,
+                                    height: 24,
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: const BoxDecoration(),
+                                    child: SvgPicture.asset(
+                                        "assets/icons/plus_icon.svg"),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  const Text(
+                                    'Vytvoriť nové podujatie',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
