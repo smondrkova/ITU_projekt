@@ -23,8 +23,10 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+apply plugin: "com.android.application"
+
 android {
-    namespace "com.example.itu"
+    namespace "com.evento.itu"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -69,4 +71,7 @@ flutter {
 dependencies {
     implementation 'androidx.multidex:multidex:2.0.1' // pridane
     implementation platform('com.google.firebase:firebase-bom:32.7.0') // pridane
+    implementation 'com.google.firebase:firebase-analytics:21.5.0'
 }
+
+apply plugin: 'com.google.gms.google-services'
