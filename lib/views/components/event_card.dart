@@ -3,9 +3,9 @@ import 'package:intl/intl.dart';
 import 'package:itu/models/Event.dart';
 
 class EventCard extends StatelessWidget {
-  final Event event;
+  Event event;
 
-  const EventCard({super.key, required this.event});
+  EventCard({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {

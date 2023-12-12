@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:itu/views/categories.dart';
+import 'package:itu/views/category_detail.dart';
 import 'package:itu/views/create_event.dart';
-import 'package:itu/views/event_card.dart';
+import 'package:itu/views/components/event_card.dart';
 import 'package:itu/views/favorites.dart';
 import 'package:itu/views/search.dart';
 import 'package:itu/views/user.dart';
@@ -24,12 +25,17 @@ class _HomePageState extends State<HomePage> {
     screens = [
       const HomeContent(),
       const SearchPage(),
-      const CategoriesPage(),
+      CategoriesPage(
+        navigateToNewPage: navigateToNewPage,
+      ),
       const FavoritesPage(),
       UserPage(
         navigateToNewPage: navigateToNewPage,
       ),
       CreateEventPage(
+        navigateToNewPage: navigateToNewPage,
+      ),
+      CategoryDetail(
         navigateToNewPage: navigateToNewPage,
       ),
     ];
