@@ -32,7 +32,35 @@ class _HomePageState extends State<HomePage> {
     ];
   }
 
+  int convertPageToIndex(String page) {
+    switch (page) {
+      case 'HomePage':
+        _selectedPage = 0;
+        break;
+      case 'SearchPage':
+        _selectedPage = 1;
+        break;
+      case 'CategoriesPage':
+        _selectedPage = 2;
+        break;
+      case 'FavoritesPage':
+        _selectedPage = 3;
+        break;
+      case 'UserPage':
+        _selectedPage = 4;
+        break;
+      case 'CreateEventPage':
+        _selectedPage = 5;
+        break;
+      default:
+        _selectedPage = 0;
+    }
+
+    return _selectedIndex;
+  }
+
   void navigateToNewPage(int index) {
+    //int index = convertPageToIndex(page);
     if (index >= 0 && index < screens.length) {
       setState(() {
         _selectedPage = index;
@@ -270,11 +298,7 @@ class _HomeContentState extends State<HomeContent> {
               child: Text(
                 'Aktuálne populárne',
                 style: TextStyle(
-                  color: Colors.white,
                   fontSize: 24,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w700,
-                  height: 0,
                 ),
               ),
             ),
@@ -344,11 +368,7 @@ class _HomeContentState extends State<HomeContent> {
                           child: Text(
                             'Burger fest',
                             style: TextStyle(
-                              color: Colors.white,
                               fontSize: 16,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w700,
-                              height: 0,
                             ),
                           ),
                         ),
@@ -357,11 +377,8 @@ class _HomeContentState extends State<HomeContent> {
                           child: Text(
                             '25.11.2023',
                             style: TextStyle(
-                              color: Colors.white,
                               fontSize: 14,
-                              fontFamily: 'Inter',
                               fontWeight: FontWeight.w500,
-                              height: 0,
                             ),
                           ),
                         ),
@@ -370,11 +387,8 @@ class _HomeContentState extends State<HomeContent> {
                           child: Text(
                             'Námestie Svobody',
                             style: TextStyle(
-                              color: Colors.white,
                               fontSize: 14,
-                              fontFamily: 'Inter',
                               fontWeight: FontWeight.w500,
-                              height: 0,
                             ),
                           ),
                         ),

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:itu/views/create_event.dart';
-import 'package:itu/views/home.dart';
 
 class UserPage extends StatefulWidget {
   final Function navigateToNewPage;
-  UserPage({required this.navigateToNewPage, Key? key}) : super(key: key);
+  const UserPage({required this.navigateToNewPage, Key? key}) : super(key: key);
 
   @override
   State<UserPage> createState() => _UserPageState();
@@ -55,9 +53,6 @@ class _UserPageState extends State<UserPage> {
                               'assets/icons/user_photo_icon.svg',
                             ),
                           ],
-                          // children: [
-                          // ,
-                          // ],
                         ),
                       ),
                     ],
@@ -73,11 +68,7 @@ class _UserPageState extends State<UserPage> {
                     'Používateľ',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: 24,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w600,
-                      height: 0,
                     ),
                   ),
                 ),
@@ -91,11 +82,8 @@ class _UserPageState extends State<UserPage> {
                   child: Text(
                     'Moje podujatia',
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: 18,
-                      fontFamily: 'Inter',
                       fontWeight: FontWeight.w700,
-                      height: 0,
                     ),
                   ),
                 ),
@@ -109,26 +97,21 @@ class _UserPageState extends State<UserPage> {
                   child: Text(
                     'Profil',
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: 24,
-                      fontFamily: 'Inter',
                       fontWeight: FontWeight.w700,
-                      height: 0,
                     ),
                   ),
                 ),
               ),
               Positioned(
-                left: 311,
-                top: 25,
+                left: 330,
+                top: 50,
                 child: Container(
                   width: 28,
                   height: 28,
                   clipBehavior: Clip.antiAlias,
                   decoration: const BoxDecoration(),
-                  // child: Stack(children: [
-                  // ,
-                  // ]),
+                  child: SvgPicture.asset('assets/icons/logout_icon.svg'),
                 ),
               ),
               Positioned(

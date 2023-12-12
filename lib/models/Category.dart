@@ -1,6 +1,7 @@
 class Category {
   final String id;
   final String name;
+  String? photoUrl;
 
-  Category({required this.id, required this.name});
+  Category({required this.id, required this.name, this.photoUrl});
 }
