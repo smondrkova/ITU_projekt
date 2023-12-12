@@ -212,11 +212,8 @@ class _UserPageState extends State<UserPage> {
                                   child: Text(
                                     'Najlepšia párty',
                                     style: TextStyle(
-                                      color: Colors.white,
                                       fontSize: 16,
-                                      fontFamily: 'Inter',
                                       fontWeight: FontWeight.w700,
-                                      height: 0,
                                     ),
                                   ),
                                 ),
@@ -225,11 +222,8 @@ class _UserPageState extends State<UserPage> {
                                   child: Text(
                                     '6.12.2023',
                                     style: TextStyle(
-                                      color: Colors.white,
                                       fontSize: 14,
-                                      fontFamily: 'Inter',
                                       fontWeight: FontWeight.w500,
-                                      height: 0,
                                     ),
                                   ),
                                 ),
@@ -238,11 +232,8 @@ class _UserPageState extends State<UserPage> {
                                   child: Text(
                                     'Fléda',
                                     style: TextStyle(
-                                      color: Colors.white,
                                       fontSize: 14,
-                                      fontFamily: 'Inter',
                                       fontWeight: FontWeight.w500,
-                                      height: 0,
                                     ),
                                   ),
                                 ),
@@ -257,9 +248,8 @@ class _UserPageState extends State<UserPage> {
                               height: 15,
                               clipBehavior: Clip.antiAlias,
                               decoration: const BoxDecoration(),
-                              // child: Stack(children: [
-                              // ,
-                              // ]),
+                              child: SvgPicture.asset(
+                                  'assets/icons/edit_icon.svg'),
                             ),
                           ),
                         ],

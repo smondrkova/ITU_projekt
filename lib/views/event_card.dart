@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:itu/models/Event.dart';
 
 class EventCard extends StatelessWidget {
   final Event event;
 
-  EventCard({required this.event});
+  const EventCard({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +81,7 @@ class EventCard extends StatelessWidget {
                 SizedBox(
                   width: 115,
                   child: Text(
-                    event.date.toString(), // You might want to format the date
+                    DateFormat('dd.MM.yyyy').format(event.date),
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,

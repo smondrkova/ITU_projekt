@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:itu/views/categories.dart';
 import 'package:itu/views/create_event.dart';
+import 'package:itu/views/event_card.dart';
 import 'package:itu/views/favorites.dart';
 import 'package:itu/views/search.dart';
 import 'package:itu/views/user.dart';
@@ -28,7 +29,9 @@ class _HomePageState extends State<HomePage> {
       UserPage(
         navigateToNewPage: navigateToNewPage,
       ),
-      const CreateEventPage(),
+      CreateEventPage(
+        navigateToNewPage: navigateToNewPage,
+      ),
     ];
   }
 
@@ -398,6 +401,9 @@ class _HomeContentState extends State<HomeContent> {
                 ],
               ),
             )
+
+            // dalsie componenty eventov
+            //EventCard(event: events[0]),
           ],
         ),
       ),

@@ -10,7 +10,9 @@ import 'package:intl/intl.dart';
 import 'package:itu/views/home.dart';
 
 class CreateEventPage extends StatefulWidget {
-  const CreateEventPage({super.key});
+  final Function navigateToNewPage;
+  const CreateEventPage({required this.navigateToNewPage, Key? key})
+      : super(key: key);
 
   @override
   State<CreateEventPage> createState() => _CreateEventPageState();
@@ -130,6 +132,27 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   ),
                 ),
               ),
+
+              // Positioned(
+              //   left: 25,
+              //   top: 25,
+              //   child: GestureDetector(
+              //     onTap: getImage,
+              //     child: Container(
+              //       width: 225,
+              //       height: 225,
+              //       clipBehavior: Clip.antiAlias,
+              //       decoration: const BoxDecoration(),
+              //       // profile image
+              //       child: _image == null
+              //           ? Image.asset(
+              //               'assets/placeholder.png',
+              //               fit: BoxFit.cover,
+              //             )
+              //           : Image.file(_image!),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -894,7 +917,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       setState(() {
                         if (_currentViewIndex == 0) {
                           // add navigation to user page
-                          //navigateToNewPage("UserPage");
+                          widget.navigateToNewPage(4);
                         }
                         _currentViewIndex -= 1;
                       });
