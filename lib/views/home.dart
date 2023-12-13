@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:itu/controllers/EventController.dart';
 import 'package:itu/views/categories.dart';
 import 'package:itu/views/create_event.dart';
 import 'package:itu/views/favorites.dart';
@@ -305,100 +306,104 @@ class _HomeContentState extends State<HomeContent> {
               ),
             ),
             const SizedBox(height: 10),
+            // Container(
+            //   width: 350,
+            //   height: 132,
+            //   decoration: const BoxDecoration(
+            //     boxShadow: [
+            //       BoxShadow(
+            //         color: Color(0x3F000000),
+            //         blurRadius: 4,
+            //         offset: Offset(0, 4),
+            //         spreadRadius: 0,
+            //       )
+            //     ],
+            //   ),
+            //   child: Stack(
+            //     children: [
+            //       Positioned(
+            //         left: 149,
+            //         top: 0,
+            //         child: Container(
+            //           width: 195,
+            //           height: 132,
+            //           decoration: const ShapeDecoration(
+            //             color: Color(0xFF3B3B3B),
+            //             shape: RoundedRectangleBorder(
+            //               borderRadius: BorderRadius.only(
+            //                 topRight: Radius.circular(24),
+            //                 bottomRight: Radius.circular(24),
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //       Positioned(
+            //         left: 0,
+            //         top: 0,
+            //         child: Container(
+            //           width: 160,
+            //           height: 132,
+            //           decoration: const ShapeDecoration(
+            //             image: DecorationImage(
+            //               image: AssetImage('assets/placeholder.png'),
+            //               fit: BoxFit.cover,
+            //             ),
+            //             shape: RoundedRectangleBorder(
+            //               borderRadius: BorderRadius.only(
+            //                 topLeft: Radius.circular(24),
+            //                 bottomLeft: Radius.circular(24),
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //       const Positioned(
+            //         left: 172,
+            //         top: 42.31,
+            //         child: Column(
+            //           mainAxisSize: MainAxisSize.min,
+            //           mainAxisAlignment: MainAxisAlignment.start,
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             SizedBox(
+            //               width: 152,
+            //               child: Text(
+            //                 'Burger fest',
+            //                 style: TextStyle(
+            //                   fontSize: 16,
+            //                 ),
+            //               ),
+            //             ),
+            //             SizedBox(
+            //               width: 115,
+            //               child: Text(
+            //                 '25.11.2023',
+            //                 style: TextStyle(
+            //                   fontSize: 14,
+            //                   fontWeight: FontWeight.w500,
+            //                 ),
+            //               ),
+            //             ),
+            //             SizedBox(
+            //               width: 148,
+            //               child: Text(
+            //                 'Námestie Svobody',
+            //                 style: TextStyle(
+            //                   fontSize: 14,
+            //                   fontWeight: FontWeight.w500,
+            //                 ),
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // )
             Container(
-              width: 350,
-              height: 132,
-              decoration: const BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Color(0x3F000000),
-                    blurRadius: 4,
-                    offset: Offset(0, 4),
-                    spreadRadius: 0,
-                  )
-                ],
-              ),
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: 149,
-                    top: 0,
-                    child: Container(
-                      width: 195,
-                      height: 132,
-                      decoration: const ShapeDecoration(
-                        color: Color(0xFF3B3B3B),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(24),
-                            bottomRight: Radius.circular(24),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 0,
-                    top: 0,
-                    child: Container(
-                      width: 160,
-                      height: 132,
-                      decoration: const ShapeDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/placeholder.png'),
-                          fit: BoxFit.cover,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(24),
-                            bottomLeft: Radius.circular(24),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Positioned(
-                    left: 172,
-                    top: 42.31,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 152,
-                          child: Text(
-                            'Burger fest',
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 115,
-                          child: Text(
-                            '25.11.2023',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 148,
-                          child: Text(
-                            'Námestie Svobody',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              height: 500,
+              child: EventController().buildEventListView(),
             )
           ],
         ),
@@ -406,16 +411,3 @@ class _HomeContentState extends State<HomeContent> {
     );
   }
 }
-
-// // Updated ElevatedButton for Categories
-// ElevatedButton(
-//   onPressed: () {
-//     Navigator.push(
-//       context,
-//       MaterialPageRoute(
-//         builder: (context) => const CategoriesPage(title: 'Categories'),
-//       ),
-//     );
-//   },
-//   child: Text('Go to Categories'),
-// ),
