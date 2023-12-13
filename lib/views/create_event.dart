@@ -19,7 +19,13 @@ class CreateEventPage extends StatefulWidget {
 }
 
 class _CreateEventPageState extends State<CreateEventPage> {
-  final _dateController = TextEditingController();
+  final _dateController = TextEditingController(
+    text: DateFormat('dd.MM.yyyy').format(DateTime.now()),
+  );
+
+  final _timeController = TextEditingController(
+    text: DateFormat('HH:mm').format(DateTime.now()),
+  );
   //final eventController = EventController();
 
   Event event = Event(
@@ -235,11 +241,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     child: Text(
                       'Názov*',
                       style: TextStyle(
-                        color: Colors.white,
                         fontSize: 16,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                        height: 0,
                       ),
                     ),
                   ),
@@ -258,7 +260,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: const EdgeInsets.fromLTRB(20, 18, 0, 0),
                       child: TextFormField(
                         textAlignVertical: TextAlignVertical.center,
                         style: const TextStyle(
@@ -321,7 +323,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: const EdgeInsets.fromLTRB(20, 18, 0, 0),
                           child: TextFormField(
                             controller: _dateController,
                             style: const TextStyle(
@@ -367,11 +369,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       child: Text(
                         'Čas*',
                         style: TextStyle(
-                          color: Colors.white,
                           fontSize: 16,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w700,
-                          height: 0,
                         ),
                       ),
                     ),
@@ -386,23 +384,43 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        padding: const EdgeInsets.fromLTRB(20, 18, 0, 0),
                         child: TextFormField(
-                          textAlignVertical: TextAlignVertical.center,
-                          keyboardType: TextInputType.datetime,
+                          // textAlignVertical: TextAlignVertical.center,
+                          // keyboardType: TextInputType.datetime,
+                          controller: _timeController,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Vyplň čas',
-                            hintStyle: TextStyle(
-                              color: Color.fromARGB(110, 255, 255, 255),
-                            ),
-                          ),
-                          onSaved: (value) {
-                            event.name = value!;
+                          // decoration: const InputDecoration(
+                          //   border: InputBorder.none,
+                          //   hintText: 'Vyplň čas',
+                          //   hintStyle: TextStyle(
+                          //     color: Color.fromARGB(110, 255, 255, 255),
+                          //   ),
+                          // ),
+                          // onSaved: (value) {
+                          //   event.name = value!;
+                          // },
+                          onTap: () async {
+                            final TimeOfDay? pickedTime = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.now(),
+                            );
+
+                            if (pickedTime != null) {
+                              final DateTime now = DateTime.now();
+                              final DateTime pickedDateTime = DateTime(
+                                  now.year,
+                                  now.month,
+                                  now.day,
+                                  pickedTime.hour,
+                                  pickedTime.minute);
+                              _timeController.text =
+                                  DateFormat('HH:mm').format(pickedDateTime);
+                              // Do something with the picked time
+                            }
                           },
                         ),
                       ),
@@ -427,11 +445,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     child: Text(
                       'Miesto konania*',
                       style: TextStyle(
-                        color: Colors.white,
                         fontSize: 16,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                        height: 0,
                       ),
                     ),
                   ),
@@ -450,7 +464,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: const EdgeInsets.fromLTRB(20, 18, 0, 0),
                       child: TextFormField(
                         textAlignVertical: TextAlignVertical.center,
                         style: const TextStyle(
@@ -489,11 +503,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     child: Text(
                       'Kategória*',
                       style: TextStyle(
-                        color: Colors.white,
                         fontSize: 16,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                        height: 0,
                       ),
                     ),
                   ),
@@ -574,7 +584,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                       child: TextFormField(
                         textAlignVertical: TextAlignVertical.center,
                         style: const TextStyle(
@@ -699,7 +709,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       ),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: const EdgeInsets.fromLTRB(20, 18, 0, 0),
                       child: TextFormField(
                         keyboardType: TextInputType.number,
                         style:
@@ -711,7 +721,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
                               color: Color.fromARGB(110, 255, 255, 255)),
                         ),
                         onSaved: (value) {
-                          event.price = double.parse(value!);
+                          if (value != null && value.isNotEmpty) {
+                            event.price = double.parse(value);
+                          }
                         },
                       ),
                     ),
@@ -906,24 +918,94 @@ class _CreateEventPageState extends State<CreateEventPage> {
                 child: _buildView(_currentViewIndex),
               ),
               Positioned(
-                  left: 319,
-                  top: 52,
-                  child: _buildIcon('assets/icons/info_icon.svg')),
-              Positioned(
                 left: 8,
                 top: 52,
                 child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (_currentViewIndex == 0) {
-                          // add navigation to user page
-                          widget.navigateToNewPage(4);
-                        }
-                        _currentViewIndex -= 1;
-                      });
-                    },
-                    child: _buildIcon('assets/icons/left_arrow_icon.svg')),
+                  onTap: () {
+                    setState(() {
+                      if (_currentViewIndex == 0) {
+                        // add navigation to user page
+                        widget.navigateToNewPage('UserPage');
+                      }
+                      _currentViewIndex -= 1;
+                    });
+                  },
+                  child: _buildIcon('assets/icons/left_arrow_icon.svg'),
+                ),
               ),
+              Positioned(
+                  left: 319,
+                  top: 43,
+                  child: IconButton(
+                    icon: SvgPicture.asset('assets/icons/info_icon.svg',
+                        width: 25.0, height: 25.0),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Align(
+                            alignment: Alignment.topRight,
+                            child: Dialog(
+                              backgroundColor: Colors.transparent,
+                              insetPadding: const EdgeInsets.all(10),
+                              child: Stack(
+                                // overflow: Overflow.visible,
+                                //alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    width: 285,
+                                    height: 174,
+                                    decoration: ShapeDecoration(
+                                      color: const Color(0xFF242424),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(24),
+                                      ),
+                                      shadows: const [
+                                        BoxShadow(
+                                          color: Color(0x3F000000),
+                                          blurRadius: 4,
+                                          offset: Offset(0, 4),
+                                          spreadRadius: 0,
+                                        )
+                                      ],
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        const Positioned(
+                                          left: 16,
+                                          top: 47,
+                                          child: SizedBox(
+                                            width: 254,
+                                            height: 117,
+                                            child: Text(
+                                              'Vytváranie podujatí prebieha formou požiadavok. Po odoslaní požiadavky vás budeme informovať o jej stave prostredníctvom e-mailu.',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w500,
+                                                height: 0,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          left: 251,
+                                          top: 16,
+                                          child: _buildIcon(
+                                              'assets/icons/info_icon.svg'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  )),
             ],
           ),
         ));

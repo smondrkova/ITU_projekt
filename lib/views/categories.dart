@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class CategoriesPage extends StatefulWidget {
   final Function navigateToNewPage;
@@ -28,8 +29,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  // sem pojdu category cards
                   GestureDetector(
-                    onTap: () => widget.navigateToNewPage(6),
+                    onTap: () => widget.navigateToNewPage('CategoryDetailPage'),
                     child: Container(
                       width: 345,
                       height: 132,

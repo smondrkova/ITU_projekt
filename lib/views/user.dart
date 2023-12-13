@@ -257,7 +257,7 @@ class _UserPageState extends State<UserPage> {
                     ),
                     const SizedBox(height: 8),
                     GestureDetector(
-                      onTap: () => widget.navigateToNewPage(5),
+                      onTap: () => widget.navigateToNewPage('CreateEventPage'),
                       child: Container(
                         width: 328,
                         height: 39,

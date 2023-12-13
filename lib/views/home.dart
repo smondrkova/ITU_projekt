@@ -4,6 +4,7 @@ import 'package:itu/views/categories.dart';
 import 'package:itu/views/category_detail.dart';
 import 'package:itu/views/create_event.dart';
 import 'package:itu/views/components/event_card.dart';
+import 'package:itu/views/event_detail.dart';
 import 'package:itu/views/favorites.dart';
 import 'package:itu/views/search.dart';
 import 'package:itu/views/user.dart';
@@ -38,10 +39,12 @@ class _HomePageState extends State<HomePage> {
       CategoryDetail(
         navigateToNewPage: navigateToNewPage,
       ),
+      EventDetail(navigateToNewPage: navigateToNewPage),
     ];
   }
 
   int convertPageToIndex(String page) {
+    print(page);
     switch (page) {
       case 'HomePage':
         _selectedPage = 0;
@@ -61,15 +64,22 @@ class _HomePageState extends State<HomePage> {
       case 'CreateEventPage':
         _selectedPage = 5;
         break;
+      case 'CategoryDetailPage':
+        _selectedPage = 6;
+        break;
+      case 'EventDetailPage':
+        _selectedPage = 7;
+        break;
       default:
         _selectedPage = 0;
+        break;
     }
 
-    return _selectedIndex;
+    return _selectedPage;
   }
 
-  void navigateToNewPage(int index) {
-    //int index = convertPageToIndex(page);
+  void navigateToNewPage(String page) {
+    int index = convertPageToIndex(page);
     if (index >= 0 && index < screens.length) {
       setState(() {
         _selectedPage = index;
