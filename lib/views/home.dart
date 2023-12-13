@@ -23,7 +23,9 @@ class _HomePageState extends State<HomePage> {
     screens = [
       const HomeContent(),
       const SearchPage(),
-      const CategoriesPage(),
+      const CategoriesPage(
+        title: 'Categories',
+      ),
       const FavoritesPage(),
       UserPage(
         navigateToNewPage: navigateToNewPage,
@@ -404,3 +406,16 @@ class _HomeContentState extends State<HomeContent> {
     );
   }
 }
+
+// // Updated ElevatedButton for Categories
+// ElevatedButton(
+//   onPressed: () {
+//     Navigator.push(
+//       context,
+//       MaterialPageRoute(
+//         builder: (context) => const CategoriesPage(title: 'Categories'),
+//       ),
+//     );
+//   },
+//   child: Text('Go to Categories'),
+// ),
