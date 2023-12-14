@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
     screens = [
       const HomeContent(),
       const SearchPage(),
-      CategoriesPage(
+      const CategoriesPage(
         title: 'Categories',
       ),
       const FavoritesPage(),
@@ -44,7 +44,20 @@ class _HomePageState extends State<HomePage> {
         //navigateToNewPage: navigateToNewPage,
         category: Category(id: '', name: ''),
       ),
-      EventDetail(navigateToNewPage: navigateToNewPage),
+      EventDetail(
+        //navigateToNewPage: navigateToNewPage
+        event: Event(
+          id: '',
+          name: '',
+          date_time: DateTime.now(),
+          location: '',
+          description: '',
+          categoryId: '',
+          price: 0.0,
+          ticketSellLink: '',
+          photoUrl: '',
+        ),
+      ),
     ];
   }
 
