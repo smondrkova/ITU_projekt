@@ -286,56 +286,60 @@ class _SearchPageState extends State<SearchPage> {
           context: context,
           delegate: CustomSearchDelegate(),
         );
-
-
       },
-      child: Container(
-        width: 350,
-        height: 47,
-        clipBehavior: Clip.antiAlias,
-        decoration: ShapeDecoration(
-          color: const Color(0xFF3B3B3B),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
-          ),
-          shadows: const [
-            BoxShadow(
-              color: Color(0x3F000000),
-              blurRadius: 4,
-              offset: Offset(0, 4),
-              spreadRadius: 0,
-            )
-          ],
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              left: 19,
-              top: 14,
-              child: SizedBox(
-                width: 260,
-                height: 22,
-                child: Text(
-                  'Hľadaj...',
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.5),
-                    fontSize: 15,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.only(
+              top: 50.0), // Adjust the top value as needed
+          child: Container(
+            // width: 350,
+            height: 47,
+            clipBehavior: Clip.antiAlias,
+            decoration: ShapeDecoration(
+              color: const Color(0xFF3B3B3B),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
+              ),
+              shadows: const [
+                BoxShadow(
+                  color: Color(0x3F000000),
+                  blurRadius: 4,
+                  offset: Offset(0, 4),
+                  spreadRadius: 0,
+                )
+              ],
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  left: 19,
+                  top: 14,
+                  child: SizedBox(
+                    width: 260,
+                    height: 22,
+                    child: Text(
+                      'Hľadaj...',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.5),
+                        fontSize: 15,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Positioned(
+                  right: 10,
+                  top: 8,
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: const BoxDecoration(),
+                    child: SvgPicture.asset('assets/icons/search_icon.svg'),
+                  ),
+                ),
+              ],
             ),
-            Positioned(
-              left: 300,
-              top: 8,
-              child: Container(
-                width: 30,
-                height: 30,
-                clipBehavior: Clip.antiAlias,
-                decoration: const BoxDecoration(),
-                child: SvgPicture.asset('assets/icons/search_icon.svg'),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -347,7 +351,8 @@ class CustomSearchDelegate extends SearchDelegate {
 
   Future<void> fetchData() async {
     // Replace 'your_collection' with the actual name of your Firestore collection
-    CollectionReference collection = FirebaseFirestore.instance.collection('events');
+    CollectionReference collection =
+        FirebaseFirestore.instance.collection('events');
 
     QuerySnapshot querySnapshot = await collection.get();
 
@@ -421,5 +426,4 @@ class CustomSearchDelegate extends SearchDelegate {
       },
     );
   }
-
 }
