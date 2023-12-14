@@ -31,7 +31,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
   Event event = Event(
     id: '',
     name: '',
-    date: DateTime.now(),
+    date_time: DateTime.now(),
     location: '',
     categoryId: '',
     description: '',
@@ -343,7 +343,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                 String formattedDate =
                                     DateFormat('dd.MM.yyyy').format(pickedDate);
                                 _dateController.text = formattedDate;
-                                event.date =
+                                event.date_time =
                                     pickedDate; // Set the picked date to event.date
                               }
                             },
