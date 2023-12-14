@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
+import 'package:itu/models/Event.dart';
+import 'package:itu/views/reviews.dart';
+import 'package:itu/views/send_invite.dart';
 
 class EventDetail extends StatefulWidget {
-  final Function navigateToNewPage;
-  const EventDetail({required this.navigateToNewPage, Key? key})
-      : super(key: key);
+  //final Function navigateToNewPage;
+  final Event event;
+
+  const EventDetail({required this.event, Key? key}) : super(key: key);
 
   @override
   State<EventDetail> createState() => _EventDetailState();
 }
 
 class _EventDetailState extends State<EventDetail> {
+  bool isFavorite = false;
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: 934,
+    return Scaffold(
+      body: Center(
         child: Stack(
           children: [
             Align(
@@ -39,46 +45,46 @@ class _EventDetailState extends State<EventDetail> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const SizedBox(
-                    width: 331,
-                    height: 126,
+                  SizedBox(
+                    //width: 331,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: 331,
+                          width: 320,
                           child: Text(
-                            'Anna',
+                            widget.event.name,
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 30,
+                            style: const TextStyle(
+                              fontSize: 25,
                             ),
                           ),
                         ),
                         Text(
-                          '3.1.2024',
+                          DateFormat('dd.MM.yyyy')
+                              .format(widget.event.date_time),
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         Text(
-                          'Bobyhall Brno',
+                          widget.event.location,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         Text(
-                          '20:00',
+                          DateFormat('HH:mm').format(widget.event.date_time),
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 20,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],
@@ -103,7 +109,7 @@ class _EventDetailState extends State<EventDetail> {
                         )
                       ],
                     ),
-                    child: const Column(
+                    child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -111,8 +117,8 @@ class _EventDetailState extends State<EventDetail> {
                         SizedBox(
                           width: 321,
                           child: Text(
-                            'Vychutnajte si nezabudnuteľný hudobný zážitok na koncerte speváčky Anny! S jej silným hlasom a jedinečným talentom vám ponúkne večer plný dojímavých balád a hitov. \n\nAnna vás zavedie do sveta hudobného čarovania, kde sa stretnú vášnivé melódie a výnimočný výkon. Zabezpečte si vstupenky a pridajte sa k nám na večer plný hudobnej magie s Annou v ústrednej úlohe! 🎤✨\n\nVstupné: 15€',
-                            style: TextStyle(
+                            widget.event.description,
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                             ),
@@ -122,31 +128,28 @@ class _EventDetailState extends State<EventDetail> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  SizedBox(
-                    width: 339,
-                    height: 52,
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 0,
-                          top: 0,
-                          child: Container(
-                            width: 339,
-                            height: 52,
-                            decoration: ShapeDecoration(
-                              color: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24),
+                  GestureDetector(
+                    child: SizedBox(
+                      width: 339,
+                      height: 52,
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            left: 0,
+                            top: 0,
+                            child: Container(
+                              width: 339,
+                              height: 52,
+                              decoration: ShapeDecoration(
+                                color: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const Positioned(
-                          left: 113,
-                          top: 13,
-                          child: SizedBox(
-                            width: 113,
-                            height: 25,
+                          const Align(
+                            alignment: Alignment.center,
                             child: Text(
                               'Vstupenky',
                               textAlign: TextAlign.center,
@@ -156,8 +159,88 @@ class _EventDetailState extends State<EventDetail> {
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ReviewsPage(),
+                      ),
+                    ),
+                    child: SizedBox(
+                      width: 339,
+                      height: 52,
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: 339,
+                            height: 52,
+                            decoration: ShapeDecoration(
+                              color: Colors.deepPurple,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ),
+                          const Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Recenzie',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  GestureDetector(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SendInvitePage(),
+                      ),
+                    ),
+                    child: SizedBox(
+                      width: 339,
+                      height: 52,
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            left: 0,
+                            top: 0,
+                            child: Container(
+                              width: 339,
+                              height: 52,
+                              decoration: ShapeDecoration(
+                                color: const Color.fromARGB(255, 122, 60, 194),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Poslať pozvánku',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -166,17 +249,28 @@ class _EventDetailState extends State<EventDetail> {
             Positioned(
               left: 346,
               top: 50,
-              child: SizedBox(
-                width: 20,
-                height: 20,
-                child: SvgPicture.asset('assets/icons/favorites_bold_icon.svg'),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isFavorite = !isFavorite;
+                  });
+                },
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: SvgPicture.asset(
+                    isFavorite
+                        ? 'assets/icons/favorites_filled_icon.svg'
+                        : 'assets/icons/favorites_bold_icon.svg',
+                  ),
+                ),
               ),
             ),
             Positioned(
               left: 25,
               top: 50,
               child: GestureDetector(
-                onTap: () => widget.navigateToNewPage('CategoryDetailPage'),
+                onTap: () => Navigator.pop(context),
                 child: SizedBox(
                   width: 20,
                   height: 20,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:itu/models/Event.dart';
+import 'package:itu/views/event_detail.dart';
 
 class EventCard extends StatelessWidget {
   //const EventCard(Set<dynamic> set, {super.key});
@@ -11,7 +12,12 @@ class EventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
       GestureDetector(
-        // onTap: () => widget.navigateToNewPage(7), //zmenit pravdepodobne
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EventDetail(event: event),
+          ),
+        ),
         child: Container(
           width: 350,
           height: 132,
