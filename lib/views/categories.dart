@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:itu/models/Category.dart';
+import 'package:itu/views/category_detail.dart';
 import '../controllers/CategoryController.dart'; // Adjust the import based on your actual file structure
 
 class CategoriesPage extends StatefulWidget {
@@ -37,7 +38,13 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 children: [
                   // sem pojdu category cards
                   GestureDetector(
-                    //onTap: () => widget.navigateToNewPage('CategoryDetailPage'),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            CategoryDetail(category: categories[index]),
+                      ),
+                    ),
                     child: Container(
                       width: 345,
                       height: 132,

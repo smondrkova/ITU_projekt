@@ -22,12 +22,12 @@ class EventCardSmall extends StatelessWidget {
             child: Container(
               width: 159,
               height: 117,
-              decoration: ShapeDecoration(
+              decoration: const ShapeDecoration(
                 image: DecorationImage(
-                  image: AssetImage(event.photoUrl),
+                  image: AssetImage('assets/placeholder.png'),
                   fit: BoxFit.cover,
                 ),
-                shape: const RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(24),
                     topRight: Radius.circular(24),
@@ -62,7 +62,7 @@ class EventCardSmall extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: 50,
+                  width: 100,
                   height: 20,
                   child: Text(
                     event.name,
