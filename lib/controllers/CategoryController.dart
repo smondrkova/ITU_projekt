@@ -4,7 +4,17 @@ import 'package:flutter/material.dart';
 import '../models/Category.dart';
 
 class CategoryController {
-  List<Category> _getCategoriesFromSnapshot(QuerySnapshot snapshot) {
+  // Stream<QuerySnapshot> getCategories() {
+  //   return FirebaseFirestore.instance.collection('categories').snapshots();
+  // }
+  Stream<List<Category>> getCategories() {
+    return FirebaseFirestore.instance
+        .collection('categories')
+        .snapshots()
+        .map(getCategoriesFromSnapshot);
+  }
+
+  List<Category> getCategoriesFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((DocumentSnapshot doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       return Category(
@@ -14,33 +24,7 @@ class CategoryController {
       );
     }).toList();
   }
-
-  Widget buildCategoryListView() {
-    return Container(
-      child: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('categories').snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
-            return const Text('Loading...');
-          }
-
-          List<Category> categories =
-              _getCategoriesFromSnapshot(snapshot.data!);
-
-          return ListView.builder(
-            itemCount: categories.length,
-            itemBuilder: (context, index) {
-              return Container(
-                child: Text(categories[index].name),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
 }
-
 
 // possible foreign key solution:
 // FirebaseFirestore rootRef = FirebaseFirestore.getInstance();

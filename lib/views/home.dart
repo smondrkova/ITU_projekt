@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:itu/controllers/EventController.dart';
+import 'package:itu/models/Category.dart';
+import 'package:itu/models/Event.dart';
 import 'package:itu/views/categories.dart';
+import 'package:itu/views/category_detail.dart';
 import 'package:itu/views/create_event.dart';
+import 'package:itu/views/components/event_card.dart';
+import 'package:itu/views/event_detail.dart';
 import 'package:itu/views/favorites.dart';
 import 'package:itu/views/search.dart';
 import 'package:itu/views/user.dart';
@@ -17,6 +22,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   int _selectedPage = 0;
+  int _selectedCategory = 0;
 
   late List<Widget> screens;
 
@@ -24,18 +30,26 @@ class _HomePageState extends State<HomePage> {
     screens = [
       const HomeContent(),
       const SearchPage(),
-      const CategoriesPage(
+      CategoriesPage(
         title: 'Categories',
       ),
       const FavoritesPage(),
       UserPage(
         navigateToNewPage: navigateToNewPage,
       ),
-      const CreateEventPage(),
+      CreateEventPage(
+        navigateToNewPage: navigateToNewPage,
+      ),
+      CategoryDetail(
+        //navigateToNewPage: navigateToNewPage,
+        category: Category(id: '', name: ''),
+      ),
+      EventDetail(navigateToNewPage: navigateToNewPage),
     ];
   }
 
   int convertPageToIndex(String page) {
+    print(page);
     switch (page) {
       case 'HomePage':
         _selectedPage = 0;
@@ -55,15 +69,22 @@ class _HomePageState extends State<HomePage> {
       case 'CreateEventPage':
         _selectedPage = 5;
         break;
+      case 'CategoryDetailPage':
+        _selectedPage = 6;
+        break;
+      case 'EventDetailPage':
+        _selectedPage = 7;
+        break;
       default:
         _selectedPage = 0;
+        break;
     }
 
-    return _selectedIndex;
+    return _selectedPage;
   }
 
-  void navigateToNewPage(int index) {
-    //int index = convertPageToIndex(page);
+  void navigateToNewPage(String page) {
+    int index = convertPageToIndex(page);
     if (index >= 0 && index < screens.length) {
       setState(() {
         _selectedPage = index;
@@ -167,6 +188,49 @@ class HomeContent extends StatefulWidget {
 }
 
 class _HomeContentState extends State<HomeContent> {
+  final EventController _eventController = EventController();
+
+  Widget buildEventsListView() {
+    return Container(
+      child: StreamBuilder<List<Event>>(
+        stream: _eventController.getEventsForHomePage(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Text('Loading...');
+          }
+
+          List<Event> events = snapshot.data!;
+
+          return ListView.builder(
+            itemCount: events.length,
+            itemBuilder: (context, index) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // sem pojdu event cards
+                  GestureDetector(
+                    // onTap: () => Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) =>
+                    //         EventDetail(event: events[index]),
+                    //   ),
+                    // ),
+                    child: EventCard(
+                      event: events[index],
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -305,106 +369,10 @@ class _HomeContentState extends State<HomeContent> {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
-            // Container(
-            //   width: 350,
-            //   height: 132,
-            //   decoration: const BoxDecoration(
-            //     boxShadow: [
-            //       BoxShadow(
-            //         color: Color(0x3F000000),
-            //         blurRadius: 4,
-            //         offset: Offset(0, 4),
-            //         spreadRadius: 0,
-            //       )
-            //     ],
-            //   ),
-            //   child: Stack(
-            //     children: [
-            //       Positioned(
-            //         left: 149,
-            //         top: 0,
-            //         child: Container(
-            //           width: 195,
-            //           height: 132,
-            //           decoration: const ShapeDecoration(
-            //             color: Color(0xFF3B3B3B),
-            //             shape: RoundedRectangleBorder(
-            //               borderRadius: BorderRadius.only(
-            //                 topRight: Radius.circular(24),
-            //                 bottomRight: Radius.circular(24),
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //       Positioned(
-            //         left: 0,
-            //         top: 0,
-            //         child: Container(
-            //           width: 160,
-            //           height: 132,
-            //           decoration: const ShapeDecoration(
-            //             image: DecorationImage(
-            //               image: AssetImage('assets/placeholder.png'),
-            //               fit: BoxFit.cover,
-            //             ),
-            //             shape: RoundedRectangleBorder(
-            //               borderRadius: BorderRadius.only(
-            //                 topLeft: Radius.circular(24),
-            //                 bottomLeft: Radius.circular(24),
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //       const Positioned(
-            //         left: 172,
-            //         top: 42.31,
-            //         child: Column(
-            //           mainAxisSize: MainAxisSize.min,
-            //           mainAxisAlignment: MainAxisAlignment.start,
-            //           crossAxisAlignment: CrossAxisAlignment.start,
-            //           children: [
-            //             SizedBox(
-            //               width: 152,
-            //               child: Text(
-            //                 'Burger fest',
-            //                 style: TextStyle(
-            //                   fontSize: 16,
-            //                 ),
-            //               ),
-            //             ),
-            //             SizedBox(
-            //               width: 115,
-            //               child: Text(
-            //                 '25.11.2023',
-            //                 style: TextStyle(
-            //                   fontSize: 14,
-            //                   fontWeight: FontWeight.w500,
-            //                 ),
-            //               ),
-            //             ),
-            //             SizedBox(
-            //               width: 148,
-            //               child: Text(
-            //                 'Námestie Svobody',
-            //                 style: TextStyle(
-            //                   fontSize: 14,
-            //                   fontWeight: FontWeight.w500,
-            //                 ),
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // )
             Container(
               height: 500,
-              child: EventController().buildEventListView(),
-            )
+              child: buildEventsListView(),
+            ),
           ],
         ),
       ),
