@@ -30,6 +30,7 @@ class EventController {
             : DateTime.now(), // Provide a default date or handle differently
         location: data['place'] ?? '',
         categoryId: data['categoryId'] ?? '',
+        organiserId: data['organiserId'] ?? '',
         description: data['description'] ?? '',
         price: (data['price'] ?? 0).toDouble(), // Ensure the type is double
         ticketSellLink: data['ticketSellLink'] ?? '',
@@ -44,6 +45,16 @@ class EventController {
         .where('category',
             isEqualTo:
                 categoryId) // Replace 'category' with your actual category field name
+        .snapshots()
+        .map(_getEventsFromSnapshot);
+  }
+
+  Stream<List<Event>> getEventsByOrganiser(String organiserId) {
+    return FirebaseFirestore.instance
+        .collection('events')
+        .where('organiser',
+            isEqualTo:
+                organiserId) // Replace 'organiserId' with your actual organiserId field name
         .snapshots()
         .map(_getEventsFromSnapshot);
   }

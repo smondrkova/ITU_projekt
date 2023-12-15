@@ -53,6 +53,7 @@ class _HomePageState extends State<HomePage> {
           location: '',
           description: '',
           categoryId: '',
+          organiserId: '',
           price: 0.0,
           ticketSellLink: '',
           photoUrl: '',

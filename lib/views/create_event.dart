@@ -34,6 +34,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
     date_time: DateTime.now(),
     location: '',
     categoryId: '',
+    organiserId: '',
     description: '',
     price: 0.0,
     ticketSellLink: '',
