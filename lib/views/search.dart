@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:itu/views/event_detail.dart';
 import '../models/Event.dart';
 import '../controllers/EventController.dart';
 
@@ -127,7 +128,15 @@ class CustomSearchDelegate extends SearchDelegate {
           itemCount: displayEvents.length,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text(displayEvents[index].name),
+              title: Text(
+                displayEvents[index].name,
+                style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              onTap: () {
+                navigateItem(context, displayEvents[index]);
+              },
             );
           },
         );
@@ -157,9 +166,14 @@ class CustomSearchDelegate extends SearchDelegate {
           itemCount: displayEvents.length,
           itemBuilder: (context, index) {
             return ListTile(
-              title: Text(displayEvents[index].name),
+              title: Text(
+                displayEvents[index].name,
+                style: TextStyle(
+                    color: Colors.white,
+                ),
+              ),
               onTap: () {
-                // Handle item selection
+                navigateItem(context, displayEvents[index]);
               },
             );
           },
@@ -167,4 +181,15 @@ class CustomSearchDelegate extends SearchDelegate {
       },
     );
   }
+
+  void navigateItem(BuildContext context, Event selectedEvent) {
+  // Navigate to the EventDetail view
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => EventDetail(event: selectedEvent),
+    ),
+  );
+}
+
 }
