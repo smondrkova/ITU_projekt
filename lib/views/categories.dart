@@ -18,90 +18,87 @@ class _CategoriesPageState extends State<CategoriesPage> {
   final CategoryController _categoryController = CategoryController();
 
   Widget buildCategoryListView() {
-    return Container(
-      child: StreamBuilder<List<Category>>(
-        stream: _categoryController.getCategories(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Text('Loading...');
-          }
+    return StreamBuilder<List<Category>>(
+      stream: _categoryController.getCategories(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Text('Loading...');
+        }
 
-          List<Category> categories = snapshot.data!;
+        List<Category> categories = snapshot.data!;
 
-          return ListView.builder(
-            itemCount: categories.length,
-            itemBuilder: (context, index) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // sem pojdu category cards
-                  GestureDetector(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            CategoryDetail(category: categories[index]),
-                      ),
-                    ),
-                    child: Container(
-                      width: 345,
-                      height: 132,
-                      decoration: const BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0x3F000000),
-                            blurRadius: 4,
-                            offset: Offset(0, 4),
-                            spreadRadius: 0,
-                          )
-                        ],
-                      ),
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            left: 0,
-                            top: 0,
-                            child: Container(
-                              width: 340,
-                              height: 132,
-                              decoration: ShapeDecoration(
-                                image: const DecorationImage(
-                                  image: AssetImage('assets/placeholder.png'),
-                                  fit: BoxFit.cover,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(24),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            left: 27,
-                            top: 16,
-                            child: SizedBox(
-                              width: 189,
-                              height: 48,
-                              child: Text(
-                                categories[index].name,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+        return ListView.builder(
+          itemCount: categories.length,
+          itemBuilder: (context, index) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          CategoryDetail(category: categories[index]),
                     ),
                   ),
-                  const SizedBox(height: 19),
-                ],
-              );
-            },
-          );
-        },
-      ),
+                  child: Container(
+                    width: 345,
+                    height: 132,
+                    decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Color(0x3F000000),
+                          blurRadius: 4,
+                          offset: Offset(0, 4),
+                          spreadRadius: 0,
+                        )
+                      ],
+                    ),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: 0,
+                          top: 0,
+                          child: Container(
+                            width: 340,
+                            height: 132,
+                            decoration: ShapeDecoration(
+                              image: const DecorationImage(
+                                image: AssetImage('assets/placeholder.png'),
+                                fit: BoxFit.cover,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 27,
+                          top: 16,
+                          child: SizedBox(
+                            width: 189,
+                            height: 48,
+                            child: Text(
+                              categories[index].name,
+                              style: const TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 19),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 
@@ -109,7 +106,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   Widget build(BuildContext context) {
     return Container(
       width: 400,
-      height: 1190,
+      height: 740,
       clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(color: Colors.black),
       child: Stack(
@@ -129,8 +126,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.fromLTRB(20, 70, 0, 0),
-            height: 500,
+            margin: const EdgeInsets.fromLTRB(20, 90, 0, 30),
             child: buildCategoryListView(),
           ),
         ],
