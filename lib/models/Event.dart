@@ -6,6 +6,7 @@ class Event {
   DateTime date_time;
   String location;
   String categoryId;
+  String organiserId;
   String description;
   double price;
   String ticketSellLink;
@@ -17,6 +18,7 @@ class Event {
     required this.date_time,
     required this.location,
     required this.categoryId,
+    required this.organiserId,
     required this.description,
     required this.price,
     required this.ticketSellLink,
@@ -31,6 +33,7 @@ class Event {
           date_time != null ? date_time : null, // Check for nullability
       'location': location,
       'categoryId': categoryId,
+      'organiserId': organiserId,
       'description': description,
       'price': price,
       'ticketSellLink': ticketSellLink,

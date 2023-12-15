@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import '../models/Category.dart';
 
 class CategoryController {
-  // Stream<QuerySnapshot> getCategories() {
-  //   return FirebaseFirestore.instance.collection('categories').snapshots();
-  // }
   Stream<List<Category>> getCategories() {
     return FirebaseFirestore.instance
         .collection('categories')
