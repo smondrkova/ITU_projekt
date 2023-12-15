@@ -105,7 +105,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 400,
+      width: 450,
       height: 740,
       clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(color: Colors.black),
@@ -126,7 +126,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.fromLTRB(20, 90, 0, 30),
+            margin: const EdgeInsets.fromLTRB(15, 90, 10, 30),
             child: buildCategoryListView(),
           ),
         ],

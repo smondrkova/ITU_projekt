@@ -116,7 +116,15 @@ class _EventDetailState extends State<EventDetail> {
                           ),
                         ),
                         Text(
-                          widget.event.location,
+                          widget.event.place_name,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          widget.event.place_address,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 20,

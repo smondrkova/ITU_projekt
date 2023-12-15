@@ -27,8 +27,10 @@ class UserController {
 
   Future<User?> getUserById(String userId) async {
     try {
-      DocumentSnapshot doc =
-          await FirebaseFirestore.instance.collection('users').doc(userId).get();
+      DocumentSnapshot doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
 
       if (doc.exists) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -49,5 +51,9 @@ class UserController {
       return null;
     }
   }
-}
 
+  Future<User?> fetchAndAssignUser() async {
+    User? user = await getUserById("OeBrMEXcqvW0kRrcF5hq");
+    return user;
+  }
+}
