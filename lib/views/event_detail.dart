@@ -190,8 +190,8 @@ class _EventDetailState extends State<EventDetail> {
                         const Color.fromARGB(255, 122, 60, 194),
                         const SendInvitePage()),
                   if (DateTime.now().isAfter(widget.event.date_time))
-                    buildButton(
-                        "Recenzie", Colors.deepPurple, const ReviewsPage()),
+                    buildButton("Recenzie", Colors.deepPurple,
+                        ReviewsPage(eventId: widget.event.id)),
                 ],
               ),
             ),
