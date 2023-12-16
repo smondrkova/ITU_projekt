@@ -1,3 +1,4 @@
+// lib/views/reviews.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,16 +14,116 @@ class ReviewsPage extends StatefulWidget {
   State<ReviewsPage> createState() => _ReviewsPageState();
 }
 
+class _EditReviewDialog extends StatefulWidget {
+  final TextEditingController editedReviewController;
+  final int initialRating;
+  final Function(int) onRatingChanged;
+  final VoidCallback onSave;
+
+  const _EditReviewDialog({
+    Key? key,
+    required this.editedReviewController,
+    required this.initialRating,
+    required this.onRatingChanged,
+    required this.onSave,
+  }) : super(key: key);
+
+  @override
+  _EditReviewDialogState createState() => _EditReviewDialogState();
+}
+
+class _EditReviewDialogState extends State<_EditReviewDialog> {
+  late int _currentRating;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize _currentRating with the initialRating
+    _currentRating = widget.initialRating;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Edit Review', style: TextStyle(color: Colors.white)),
+      content: Column(
+        children: [
+          TextField(
+            controller: widget.editedReviewController,
+            onChanged: (text) {
+              // Handle the edited text
+            },
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              labelText: 'Review',
+              labelStyle: TextStyle(color: Colors.white),
+            ),
+          ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: List.generate(
+                  5,
+                  (index) => IconButton(
+                    icon: Icon(
+                      index < _currentRating ? Icons.star : Icons.star_border,
+                      color: Colors.amber,
+                    ),
+                    onPressed: () {
+                      // Update _currentRating when a star is pressed
+                      setState(() {
+                        _currentRating = index + 1;
+                      });
+                      // Notify the parent about the rating change
+                      widget.onRatingChanged(_currentRating);
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            // Handle cancel
+            Navigator.pop(context);
+          },
+          child: Text('Cancel', style: TextStyle(color: Colors.white)),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            // Handle save
+            widget.onSave();
+            // Close the popup window
+            Navigator.pop(context);
+          },
+          style: ElevatedButton.styleFrom(
+            primary: Colors.purple,
+          ),
+          child: Text('Save', style: TextStyle(color: Colors.white)),
+        ),
+      ],
+    );
+  }
+}
+
 class _ReviewsPageState extends State<ReviewsPage> {
   final ReviewsController _reviewsController = ReviewsController();
   late Future<List<Review>> reviewsFuture;
   double averageRating = 0.0;
   final TextEditingController reviewController = TextEditingController();
   int userRating = 0;
+  final String currentUserId =
+      'OeBrMEXcqvW0kRrcF5hq'; // Replace with your actual user ID
 
   @override
   void initState() {
     super.initState();
+
     // Initialize the future to fetch reviews for the specific event
     reviewsFuture = _reviewsController.fetchReviews(widget.eventId);
 
@@ -61,10 +162,11 @@ class _ReviewsPageState extends State<ReviewsPage> {
 
     try {
       Review newReview = Review(
-        id: '', // Will be assigned by Firebase
+        id: '',
         event: widget.eventId,
         review: reviewController.text,
         rating: userRating,
+        isCurrentUserReview: true,
       );
 
       // Save the new review to Firebase
@@ -72,11 +174,15 @@ class _ReviewsPageState extends State<ReviewsPage> {
         'event': newReview.event,
         'review': newReview.review,
         'rating': newReview.rating,
+        'isCurrentUserReview': newReview.isCurrentUserReview,
       });
 
       // Clear the text field and reset the user rating
       reviewController.clear();
       userRating = 0;
+
+      // Close the keyboard by unfocusing the current focus
+      FocusScope.of(context).unfocus();
 
       // Refresh the reviews and update the average rating
       reviewsFuture = _reviewsController.fetchReviews(widget.eventId);
@@ -99,6 +205,86 @@ class _ReviewsPageState extends State<ReviewsPage> {
         ),
       );
     }
+  }
+
+  Future<void> _deleteReview(Review review) async {
+    try {
+      await _reviewsController.deleteReview(review.id);
+
+      // Refresh the reviews and update the average rating
+      reviewsFuture = _reviewsController.fetchReviews(widget.eventId);
+      _calculateAverageRating();
+
+      // Display a success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Review deleted successfully!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      // Display an error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error deleting review. Please try again.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _editReview(Review review) async {
+    final TextEditingController editedReviewController =
+        TextEditingController(text: review.review);
+
+    int editedRating = review.rating; // New variable to store the edited rating
+
+    await showDialog(
+      context: context,
+      builder: (context) => _EditReviewDialog(
+        editedReviewController: editedReviewController,
+        initialRating: editedRating,
+        onRatingChanged: (int newRating) {
+          // Update the editedRating when the rating changes
+          setState(() {
+            editedRating = newRating;
+          });
+        },
+        onSave: () async {
+          // Handle save
+          try {
+            await FirebaseFirestore.instance
+                .collection('reviews')
+                .doc(review.id)
+                .update({
+              'review': editedReviewController.text,
+              'rating': editedRating, // Update the rating in Firestore
+              // You can update other fields as needed
+            });
+
+            // Refresh the reviews and update the average rating
+            reviewsFuture = _reviewsController.fetchReviews(widget.eventId);
+            _calculateAverageRating();
+
+            // Display a success message
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Review updated successfully!'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          } catch (e) {
+            // Display an error message
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error updating review. Please try again.'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+      ),
+    );
   }
 
   @override
@@ -262,6 +448,38 @@ class _ReviewsPageState extends State<ReviewsPage> {
                             ),
                           ],
                         ),
+                        // Conditionally show edit and delete buttons based on the flag
+                        trailing: review.isCurrentUserReview != false
+                            ? Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.edit),
+                                    onPressed: () => _editReview(review),
+                                    color: Colors.blue,
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.delete),
+                                    onPressed: () => _deleteReview(review),
+                                    color: Colors.red,
+                                  ),
+                                ],
+                              )
+                            : GestureDetector(
+                                onTap: () {
+                                  // Toggle the color locally
+                                  setState(() {
+                                    review.isThumbsUp =
+                                        !(review.isThumbsUp ?? false);
+                                  });
+                                },
+                                child: Icon(
+                                  Icons.thumb_up,
+                                  color: review.isThumbsUp ?? false
+                                      ? Colors.purple
+                                      : Colors.grey,
+                                ),
+                              ),
                       );
                     },
                   );

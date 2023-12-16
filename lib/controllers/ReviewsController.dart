@@ -1,3 +1,4 @@
+// lib/controllers/ReviewsController.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/Review.dart';
 
@@ -12,11 +13,14 @@ class ReviewsController {
 
       List<Review> reviews = await Future.wait(snapshot.docs.map((doc) async {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
         return Review(
           id: doc.id,
           event: data['event'] ?? '',
           review: data['review'] ?? '',
           rating: data['rating'] ?? 0,
+          isCurrentUserReview: data['isCurrentUserReview'] ?? false,
+          isThumbsUp: data['isThumbsUp'] ?? false, // Initialize the property
         );
       }));
 
@@ -24,6 +28,43 @@ class ReviewsController {
     } catch (e) {
       print('Error fetching reviews: $e');
       return [];
+    }
+  }
+
+  Future<void> addReview(String eventId, String reviewText, int rating) async {
+    try {
+      Review newReview = Review(
+        id: '', // Will be assigned by Firebase
+        event: eventId,
+        review: reviewText,
+        rating: rating,
+        isCurrentUserReview: true,
+        isThumbsUp: false, // Initialize the property
+      );
+
+      await FirebaseFirestore.instance.collection('reviews').add({
+        'event': newReview.event,
+        'review': newReview.review,
+        'rating': newReview.rating,
+        'isCurrentUserReview': newReview.isCurrentUserReview,
+        'isThumbsUp':
+            newReview.isThumbsUp, // Include the property in the database
+      });
+    } catch (e) {
+      print('Error adding review: $e');
+      rethrow; // Re-throw the exception for the caller to handle
+    }
+  }
+
+  Future<void> deleteReview(String reviewId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('reviews')
+          .doc(reviewId)
+          .delete();
+    } catch (e) {
+      print('Error deleting review: $e');
+      rethrow; // Re-throw the exception for the caller to handle
     }
   }
 }
