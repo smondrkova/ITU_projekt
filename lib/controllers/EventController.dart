@@ -1,9 +1,21 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:itu/controllers/CategoryController.dart';
+import 'package:itu/controllers/UserController.dart';
+import 'package:itu/models/User.dart';
+import 'package:timezone/timezone.dart';
 import '../models/Event.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 class EventController {
+  final _categoryController = CategoryController();
+  final _userController = UserController();
+
+  final formKey = GlobalKey<FormState>();
+
   Stream<List<Event>> getEvents() {
     return FirebaseFirestore.instance
         .collection('events')
@@ -118,5 +130,78 @@ class EventController {
       ticketSellLink: data['ticketSellLink'] ?? '',
       photoUrl: data['photoUrl'] ?? '',
     );
+  }
+
+  void addEventToFavorites(String eventId) {
+    FirebaseFirestore.instance.collection('favourites').add({
+      'event': eventId,
+    });
+  }
+
+  Future<bool> isEventFavorite(String eventId) {
+    return FirebaseFirestore.instance
+        .collection('favourites')
+        .where('event', isEqualTo: eventId)
+        .get()
+        .then((snapshot) => snapshot.docs.isNotEmpty);
+  }
+
+  void removeEventFromFavorites(String eventId) {
+    FirebaseFirestore.instance
+        .collection('favourites')
+        .where('event', isEqualTo: eventId)
+        .get()
+        .then((snapshot) {
+      snapshot.docs.forEach((doc) {
+        doc.reference.delete();
+      });
+    });
+  }
+
+  Future<String> saveImageLocally(File imageFile) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final path = directory.path;
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final localImageFile = File('$path/$timestamp.png');
+
+    await imageFile.copy(localImageFile.path);
+
+    return localImageFile.path;
+  }
+
+  void createEvent(Event event, File? imageFile) async {
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
+
+    formKey.currentState!.save();
+
+    String localImagePath;
+    if (imageFile == null) {
+      localImagePath = '';
+    } else {
+      localImagePath = await saveImageLocally(imageFile);
+    }
+
+    String categoryId =
+        await _categoryController.getCategoryIdByName(event.categoryId);
+
+    User? user = await _userController.fetchAndAssignUser();
+    if (user != null) {
+      event.organiserId = user.id;
+    }
+
+    FirebaseFirestore.instance.collection('events').add({
+      'name': event.name,
+      'date_time': event.date_time,
+      'place_address': event.place_address,
+      'place_name': event.place_name,
+      'category': categoryId,
+      'organiser': event.organiserId,
+      'description': event.description,
+      'price': event.price,
+      'ticketSellLink': event.ticketSellLink,
+      'photoUrl': localImagePath,
+    });
   }
 }

@@ -11,6 +11,14 @@ class CategoryController {
         .map(getCategoriesFromSnapshot);
   }
 
+  Future<String> getCategoryIdByName(String name) async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('categories')
+        .where('name', isEqualTo: name)
+        .get();
+    return snapshot.docs.first.id;
+  }
+
   List<Category> getCategoriesFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((DocumentSnapshot doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;

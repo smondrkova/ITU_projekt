@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../models/User.dart'; // Make sure to replace 'User' with the actual class representing a user in your app
 
 class UserController {
+  User? currentUser;
+
   Stream<List<User>> getUsers() {
     return FirebaseFirestore.instance
         .collection('users')
@@ -54,6 +56,16 @@ class UserController {
 
   Future<User?> fetchAndAssignUser() async {
     User? user = await getUserById("OeBrMEXcqvW0kRrcF5hq");
+    currentUser = user;
+    print("Fetched user: $user");
+    print("Current user: $currentUser");
+
     return user;
   }
+
+  // User fetchCurrentUser() {
+  //   fetchAndAssignUser();
+  //   print("Current user after fetching: $currentUser");
+  //   return currentUser!;
+  // }
 }

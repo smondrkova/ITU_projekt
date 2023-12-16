@@ -5,6 +5,7 @@ import 'package:itu/controllers/UserController.dart';
 import 'package:itu/models/Event.dart';
 import 'package:itu/models/User.dart';
 import 'package:itu/views/components/event_card.dart';
+import 'package:itu/views/create_event.dart';
 
 class UserPage extends StatefulWidget {
   final Function navigateToNewPage;
@@ -98,8 +99,12 @@ class _UserPageState extends State<UserPage> {
                         child: buildUserEvents(),
                       ),
                       GestureDetector(
-                        onTap: () =>
-                            widget.navigateToNewPage('CreateEventPage'),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CreateEventPage(),
+                          ),
+                        ),
                         child: Container(
                           width: 328,
                           height: 39,

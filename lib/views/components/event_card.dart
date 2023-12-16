@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:itu/models/Event.dart';
@@ -56,12 +58,14 @@ class EventCard extends StatelessWidget {
                 child: Container(
                   width: 160,
                   height: 132,
-                  decoration: const ShapeDecoration(
+                  decoration: ShapeDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/placeholder.png'),
+                      image: event.photoUrl != ''
+                          ? Image.file(File(event.photoUrl)).image
+                          : const AssetImage('assets/placeholder.png'),
                       fit: BoxFit.cover,
                     ),
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(24),
                         bottomLeft: Radius.circular(24),

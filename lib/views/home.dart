@@ -37,9 +37,7 @@ class _HomePageState extends State<HomePage> {
       UserPage(
         navigateToNewPage: navigateToNewPage,
       ),
-      CreateEventPage(
-        navigateToNewPage: navigateToNewPage,
-      ),
+      const CreateEventPage(),
       CategoryDetail(
         //navigateToNewPage: navigateToNewPage,
         category: Category(id: '', name: ''),

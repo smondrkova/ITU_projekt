@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:itu/controllers/EventController.dart';
 import 'package:itu/models/Event.dart';
 import 'package:itu/models/Review.dart';
 import 'package:itu/views/reviews.dart';
@@ -17,9 +20,21 @@ class EventDetail extends StatefulWidget {
 }
 
 class _EventDetailState extends State<EventDetail> {
+  final EventController _eventController = EventController();
   bool isFavorite = false;
 
+  void getFavorite() async {
+    bool isFavorite = await _eventController.isEventFavorite(widget.event.id);
+    if (mounted) {
+      setState(() {
+        this.isFavorite = isFavorite;
+      });
+    }
+  }
+
   Widget buildButton(String text, Color color, [Widget? page]) {
+    getFavorite();
+
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
@@ -80,8 +95,10 @@ class _EventDetailState extends State<EventDetail> {
                     width: 275,
                     height: 275,
                     decoration: ShapeDecoration(
-                      image: const DecorationImage(
-                        image: AssetImage('assets/placeholder.png'),
+                      image: DecorationImage(
+                        image: widget.event.photoUrl != ''
+                            ? Image.file(File(widget.event.photoUrl)).image
+                            : const AssetImage('assets/placeholder.png'),
                         fit: BoxFit.cover,
                       ),
                       shape: RoundedRectangleBorder(
@@ -203,6 +220,12 @@ class _EventDetailState extends State<EventDetail> {
                 onTap: () {
                   setState(() {
                     isFavorite = !isFavorite;
+                    if (isFavorite) {
+                      _eventController.addEventToFavorites(widget.event.id);
+                    } else {
+                      _eventController
+                          .removeEventFromFavorites(widget.event.id);
+                    }
                   });
                 },
                 child: SizedBox(
@@ -212,6 +235,19 @@ class _EventDetailState extends State<EventDetail> {
                     isFavorite
                         ? 'assets/icons/favorites_filled_icon.svg'
                         : 'assets/icons/favorites_bold_icon.svg',
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              left: 310,
+              top: 50,
+              child: GestureDetector(
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: SvgPicture.asset(
+                    'assets/icons/edit_icon.svg',
                   ),
                 ),
               ),

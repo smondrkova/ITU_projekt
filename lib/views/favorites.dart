@@ -59,7 +59,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
   Widget build(BuildContext context) {
     return Container(
       width: 365,
-      height: 640,
+      height: 800,
       clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(color: Colors.black),
       child: Stack(
