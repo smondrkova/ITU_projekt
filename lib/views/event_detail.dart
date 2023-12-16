@@ -80,8 +80,8 @@ class _EventDetailState extends State<EventDetail> {
                     width: 275,
                     height: 275,
                     decoration: ShapeDecoration(
-                      image: const DecorationImage(
-                        image: AssetImage('assets/placeholder.png'),
+                      image: DecorationImage(
+                        image: AssetImage(widget.event.getAssetPath()),
                         fit: BoxFit.cover,
                       ),
                       shape: RoundedRectangleBorder(
