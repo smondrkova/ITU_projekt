@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:itu/views/user_invites.dart';
 
 class UserPage extends StatefulWidget {
   final Function navigateToNewPage;
@@ -301,6 +302,22 @@ class _UserPageState extends State<UserPage> {
                               ),
                             ),
                           ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => UserInvitesPage(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'View Invites',
+                        style: TextStyle(
+                          fontSize: 16,
                         ),
                       ),
                     ),
