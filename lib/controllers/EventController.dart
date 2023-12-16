@@ -14,7 +14,8 @@ class EventController {
   final _categoryController = CategoryController();
   final _userController = UserController();
 
-  final formKey = GlobalKey<FormState>();
+  final createFormKey = GlobalKey<FormState>();
+  final editFormKey = GlobalKey<FormState>();
 
   Stream<List<Event>> getEvents() {
     return FirebaseFirestore.instance
@@ -38,14 +39,14 @@ class EventController {
         id: doc.id,
         name: data['name'] ?? '',
         date_time: data['date_time'] != null
-            ? (data['date_time'] as Timestamp).toDate() // Use toDate() directly
-            : DateTime.now(), // Provide a default date or handle differently
+            ? (data['date_time'] as Timestamp).toDate()
+            : DateTime.now(),
         place_address: data['place_address'] ?? '',
         place_name: data['place_name'] ?? '',
-        categoryId: data['categoryId'] ?? '',
-        organiserId: data['organiserId'] ?? '',
+        categoryId: data['category'] ?? '',
+        organiserId: data['organiser'] ?? '',
         description: data['description'] ?? '',
-        price: (data['price'] ?? 0).toDouble(), // Ensure the type is double
+        price: (data['price'] ?? 0).toDouble(),
         ticketSellLink: data['ticketSellLink'] ?? '',
         photoUrl: data['photoUrl'] ?? '',
       );
@@ -55,9 +56,7 @@ class EventController {
   Stream<List<Event>> getEventsByCategory(String categoryId) {
     return FirebaseFirestore.instance
         .collection('events')
-        .where('category',
-            isEqualTo:
-                categoryId) // Replace 'category' with your actual category field name
+        .where('category', isEqualTo: categoryId)
         .snapshots()
         .map(_getEventsFromSnapshot);
   }
@@ -65,11 +64,17 @@ class EventController {
   Stream<List<Event>> getEventsByOrganiser(String organiserId) {
     return FirebaseFirestore.instance
         .collection('events')
-        .where('organiser',
-            isEqualTo:
-                organiserId) // Replace 'organiserId' with your actual organiserId field name
+        .where('organiser', isEqualTo: organiserId)
         .snapshots()
         .map(_getEventsFromSnapshot);
+  }
+
+  Future<Event> getEventById(String eventId) async {
+    DocumentSnapshot doc = await FirebaseFirestore.instance
+        .collection('events')
+        .doc(eventId)
+        .get();
+    return _getEventFromDocument(doc);
   }
 
   String _formatDate(DateTime date) {
@@ -123,8 +128,8 @@ class EventController {
           : DateTime.now(),
       place_address: data['place_address'] ?? '',
       place_name: data['place_name'] ?? '',
-      categoryId: data['categoryId'] ?? '',
-      organiserId: data['organiserId'] ?? '',
+      categoryId: data['category'] ?? '',
+      organiserId: data['organiser'] ?? '',
       description: data['description'] ?? '',
       price: (data['price'] ?? 0).toDouble(),
       ticketSellLink: data['ticketSellLink'] ?? '',
@@ -170,11 +175,11 @@ class EventController {
   }
 
   void createEvent(Event event, File? imageFile) async {
-    if (!formKey.currentState!.validate()) {
+    if (!createFormKey.currentState!.validate()) {
       return;
     }
 
-    formKey.currentState!.save();
+    createFormKey.currentState!.save();
 
     String localImagePath;
     if (imageFile == null) {
@@ -192,6 +197,55 @@ class EventController {
     }
 
     FirebaseFirestore.instance.collection('events').add({
+      'name': event.name,
+      'date_time': event.date_time,
+      'place_address': event.place_address,
+      'place_name': event.place_name,
+      'category': categoryId,
+      'organiser': event.organiserId,
+      'description': event.description,
+      'price': event.price,
+      'ticketSellLink': event.ticketSellLink,
+      'photoUrl': localImagePath,
+    });
+  }
+
+  void deleteEvent(String eventId) {
+    FirebaseFirestore.instance.collection('events').doc(eventId).delete();
+  }
+
+  Future<bool> isEventOwner(Event event) async {
+    print('Event id: ${event.organiserId}');
+    User? user = await _userController.fetchAndAssignUser();
+    print("User: ${user!.id}");
+    if (user != null) {
+      print("Event organiser ID: ${event.organiserId}");
+      return event.organiserId == user.id;
+    } else {
+      return false;
+    }
+  }
+
+  void updateEvent(Event event, File? imageFile) async {
+    if (!editFormKey.currentState!.validate()) {
+      return;
+    }
+
+    editFormKey.currentState!.save();
+
+    String localImagePath;
+    if (imageFile != null) {
+      localImagePath = await saveImageLocally(imageFile);
+    } else {
+      localImagePath = event.photoUrl;
+    }
+
+    String categoryId =
+        await _categoryController.getCategoryIdByName(event.categoryId);
+
+    print('Updating event with category ID: ${categoryId}');
+
+    FirebaseFirestore.instance.collection('events').doc(event.id).update({
       'name': event.name,
       'date_time': event.date_time,
       'place_address': event.place_address,

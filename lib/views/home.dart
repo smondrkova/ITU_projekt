@@ -216,19 +216,11 @@ class _HomeContentState extends State<HomeContent> {
           itemCount: events.length,
           itemBuilder: (context, index) {
             return Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // sem pojdu event cards
                 GestureDetector(
-                  // onTap: () => Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) =>
-                  //         EventDetail(event: events[index]),
-                  //   ),
-                  // ),
                   child: EventCard(
                     event: events[index],
                   ),
@@ -247,6 +239,7 @@ class _HomeContentState extends State<HomeContent> {
       padding: const EdgeInsets.fromLTRB(25.0, 50.0, 25.0, 25.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: [
           const SizedBox(
             width: 153,
