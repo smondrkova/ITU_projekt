@@ -100,7 +100,7 @@ class EventCard extends StatelessWidget {
                     SizedBox(
                       width: 148,
                       child: Text(
-                        event.location,
+                        event.place_name,
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,

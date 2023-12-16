@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:itu/models/Event.dart';
+import 'package:itu/models/Review.dart';
 import 'package:itu/views/reviews.dart';
 import 'package:itu/views/send_invite.dart';
 
@@ -116,7 +117,15 @@ class _EventDetailState extends State<EventDetail> {
                           ),
                         ),
                         Text(
-                          widget.event.location,
+                          widget.event.place_name,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          widget.event.place_address,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 20,
@@ -182,8 +191,8 @@ class _EventDetailState extends State<EventDetail> {
                         const Color.fromARGB(255, 122, 60, 194),
                         const SendInvitePage()),
                   if (DateTime.now().isAfter(widget.event.date_time))
-                    buildButton(
-                        "Recenzie", Colors.deepPurple, const ReviewsPage()),
+                    buildButton("Recenzie", Colors.deepPurple,
+                        ReviewsPage(eventId: widget.event.id)),
                 ],
               ),
             ),

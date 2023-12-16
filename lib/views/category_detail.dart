@@ -45,12 +45,6 @@ class _CategoryDetailState extends State<CategoryDetail> {
         },
       ),
     );
-    // return ListView.builder(
-    //   itemCount: events.length,
-    //   itemBuilder: (context, index) {
-    //     return EventCardSmall(event: events[index]);
-    //   },
-    // );
   }
 
   @override

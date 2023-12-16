@@ -28,17 +28,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
   );
   //final eventController = EventController();
 
-  Event event = Event(
-    id: '',
-    name: '',
-    date_time: DateTime.now(),
-    location: '',
-    categoryId: '',
-    description: '',
-    price: 0.0,
-    ticketSellLink: '',
-    photoUrl: '',
-  );
+  Event? event;
 
   final _formKey = GlobalKey<FormState>();
   int _currentViewIndex = 0;
@@ -275,7 +265,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           ),
                         ),
                         onSaved: (value) {
-                          event.name = value!;
+                          event!.name = value!;
                         },
                       ),
                     ),
@@ -343,7 +333,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                 String formattedDate =
                                     DateFormat('dd.MM.yyyy').format(pickedDate);
                                 _dateController.text = formattedDate;
-                                event.date_time =
+                                event!.date_time =
                                     pickedDate; // Set the picked date to event.date
                               }
                             },
@@ -479,7 +469,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           ),
                         ),
                         onSaved: (value) {
-                          event.name = value!;
+                          event!.name = value!;
                         },
                       ),
                     ),
@@ -601,7 +591,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         maxLines: null,
                         keyboardType: TextInputType.multiline,
                         onSaved: (value) {
-                          event.description = value!;
+                          event!.description = value!;
                         },
                       ),
                     ),
@@ -722,7 +712,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         ),
                         onSaved: (value) {
                           if (value != null && value.isNotEmpty) {
-                            event.price = double.parse(value);
+                            event!.price = double.parse(value);
                           }
                         },
                       ),
@@ -783,7 +773,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         maxLines: null,
                         keyboardType: TextInputType.multiline,
                         onSaved: (value) {
-                          event.ticketSellLink = value!;
+                          event!.ticketSellLink = value!;
                         },
                       ),
                     ),

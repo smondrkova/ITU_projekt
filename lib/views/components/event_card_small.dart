@@ -68,7 +68,6 @@ class EventCardSmall extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: 100,
                       height: 20,
                       child: Text(
                         event.name,

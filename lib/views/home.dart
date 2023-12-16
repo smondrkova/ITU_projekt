@@ -44,20 +44,21 @@ class _HomePageState extends State<HomePage> {
         //navigateToNewPage: navigateToNewPage,
         category: Category(id: '', name: ''),
       ),
-      EventDetail(
-        //navigateToNewPage: navigateToNewPage
-        event: Event(
-          id: '',
-          name: '',
-          date_time: DateTime.now(),
-          location: '',
-          description: '',
-          categoryId: '',
-          price: 0.0,
-          ticketSellLink: '',
-          photoUrl: '',
-        ),
-      ),
+      // EventDetail(
+      //   //navigateToNewPage: navigateToNewPage
+      //   event: Event(
+      //     id: '',
+      //     name: '',
+      //     date_time: DateTime.now(),
+      //     location: '',
+      //     description: '',
+      //     categoryId: '',
+      //     organiserId: '',
+      //     price: 0.0,
+      //     ticketSellLink: '',
+      //     photoUrl: '',
+      //   ),
+      // ),
     ];
   }
 

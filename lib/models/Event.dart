@@ -4,8 +4,10 @@ class Event {
   String id;
   String name;
   DateTime date_time;
-  String location;
+  String place_address;
+  String place_name;
   String categoryId;
+  String organiserId;
   String description;
   double price;
   String ticketSellLink;
@@ -15,8 +17,10 @@ class Event {
     required this.id,
     required this.name,
     required this.date_time,
-    required this.location,
+    required this.place_address,
+    required this.place_name,
     required this.categoryId,
+    required this.organiserId,
     required this.description,
     required this.price,
     required this.ticketSellLink,
@@ -29,8 +33,10 @@ class Event {
       'name': name,
       'date_time':
           date_time != null ? date_time : null, // Check for nullability
-      'location': location,
+      'place_address': place_address,
+      'place_name': place_name,
       'categoryId': categoryId,
+      'organiserId': organiserId,
       'description': description,
       'price': price,
       'ticketSellLink': ticketSellLink,

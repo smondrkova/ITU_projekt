@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import '../models/Category.dart';
 
 class CategoryController {
-  // Stream<QuerySnapshot> getCategories() {
-  //   return FirebaseFirestore.instance.collection('categories').snapshots();
-  // }
   Stream<List<Category>> getCategories() {
     return FirebaseFirestore.instance
         .collection('categories')
@@ -25,9 +22,3 @@ class CategoryController {
     }).toList();
   }
 }
-
-// possible foreign key solution:
-// FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-// CollectionReference itemsRef = rootRef.collection("items");
-// Query query = itemsRef.whereEqualTo("postedBy", user_id);
-// link: https://stackoverflow.com/questions/50659543/how-to-set-foreign-keys-in-firestore
