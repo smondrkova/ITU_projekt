@@ -46,8 +46,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   child: Container(
                     width: 345,
                     height: 132,
-                    decoration: const BoxDecoration(
-                      boxShadow: [
+                    decoration: BoxDecoration(
+                      boxShadow: const [
                         BoxShadow(
                           color: Color(0x3F000000),
                           blurRadius: 4,
@@ -65,8 +65,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
                             width: 340,
                             height: 132,
                             decoration: ShapeDecoration(
-                              image: const DecorationImage(
-                                image: AssetImage('assets/placeholder.png'),
+                              image: DecorationImage(
+                                image: AssetImage(
+                                    categories[index].getAssetPath()),
                                 fit: BoxFit.cover,
                               ),
                               shape: RoundedRectangleBorder(
