@@ -26,7 +26,7 @@ class ReviewsController {
 
       return reviews;
     } catch (e) {
-      print('Error fetching reviews: $e');
+      print('Chyba pri hľadaní: $e');
       return [];
     }
   }
@@ -51,7 +51,7 @@ class ReviewsController {
             newReview.isThumbsUp, // Include the property in the database
       });
     } catch (e) {
-      print('Error adding review: $e');
+      print('Chyba pri pridávaní: $e');
       rethrow; // Re-throw the exception for the caller to handle
     }
   }
@@ -63,7 +63,7 @@ class ReviewsController {
           .doc(reviewId)
           .delete();
     } catch (e) {
-      print('Error deleting review: $e');
+      print('Chyba pri mazaní: $e');
       rethrow; // Re-throw the exception for the caller to handle
     }
   }

@@ -45,7 +45,7 @@ class _EditReviewDialogState extends State<_EditReviewDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Edit Review', style: TextStyle(color: Colors.white)),
+      title: Text('Upraviť Review', style: TextStyle(color: Colors.white)),
       content: Column(
         children: [
           TextField(
@@ -92,7 +92,7 @@ class _EditReviewDialogState extends State<_EditReviewDialog> {
             // Handle cancel
             Navigator.pop(context);
           },
-          child: Text('Cancel', style: TextStyle(color: Colors.white)),
+          child: Text('Zrušiť', style: TextStyle(color: Colors.white)),
         ),
         ElevatedButton(
           onPressed: () {
@@ -104,7 +104,7 @@ class _EditReviewDialogState extends State<_EditReviewDialog> {
           style: ElevatedButton.styleFrom(
             primary: Colors.purple,
           ),
-          child: Text('Save', style: TextStyle(color: Colors.white)),
+          child: Text('Uložiť', style: TextStyle(color: Colors.white)),
         ),
       ],
     );
@@ -153,7 +153,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
       // Display an error message if review or rating is not provided
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Please provide a review and rating.'),
+          content: Text('Prosím poskytnite hodnotenie a review.'),
           backgroundColor: Colors.red,
         ),
       );
@@ -191,7 +191,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
       // Display a success message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Review added successfully!'),
+          content: Text('Review bola úspešne pridaná!'),
           backgroundColor: Colors.green,
         ),
       );
@@ -200,7 +200,8 @@ class _ReviewsPageState extends State<ReviewsPage> {
       // Display an error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error adding review. Please try again.'),
+          content:
+              Text('Vyskytla sa chyba pri pridávaní review. Skúste to znova.'),
           backgroundColor: Colors.red,
         ),
       );
@@ -218,7 +219,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
       // Display a success message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Review deleted successfully!'),
+          content: Text('Review bola úspešne odstránená!'),
           backgroundColor: Colors.green,
         ),
       );
@@ -226,7 +227,8 @@ class _ReviewsPageState extends State<ReviewsPage> {
       // Display an error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error deleting review. Please try again.'),
+          content: Text(
+              'Vyskytla sa chyba pri odstraňovaní review. Skúste to znova.'),
           backgroundColor: Colors.red,
         ),
       );
@@ -269,7 +271,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
             // Display a success message
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Review updated successfully!'),
+                content: Text('Review bola úspešne upravená!'),
                 backgroundColor: Colors.green,
               ),
             );
@@ -277,7 +279,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
             // Display an error message
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Error updating review. Please try again.'),
+                content: Text('Vyskytla sa chyba pri upravovaní review.'),
                 backgroundColor: Colors.red,
               ),
             );
@@ -324,7 +326,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
             child: Column(
               children: [
                 Text(
-                  'Average Rating',
+                  'Priemerné hodnotenie',
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.white,
@@ -350,13 +352,13 @@ class _ReviewsPageState extends State<ReviewsPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Add Your Review',
+                  'Pridať Review',
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
                 TextField(
                   controller: reviewController,
                   decoration: InputDecoration(
-                    hintText: 'Enter your review...',
+                    hintText: 'Pridajte svoju review...',
                     fillColor: Colors.black,
                     filled: true,
                     enabledBorder: OutlineInputBorder(
@@ -370,7 +372,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
                 ),
                 SizedBox(height: 10),
                 Text(
-                  'Your Rating',
+                  'Vaše hodnotenie',
                   style: TextStyle(fontSize: 16, color: Colors.white),
                 ),
                 Row(
@@ -393,7 +395,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
                 SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: _addReview,
-                  child: Text('Submit Review',
+                  child: Text('Pridať Review',
                       style: TextStyle(color: Colors.white)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.purple,
@@ -414,7 +416,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return Center(
                     child: Text(
-                      'No reviews available.',
+                      'Tento event nemá žiadne reivews.',
                       style: TextStyle(color: Colors.white),
                     ),
                   );
