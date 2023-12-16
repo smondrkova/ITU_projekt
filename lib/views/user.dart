@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:itu/controllers/EventController.dart';
+import 'package:itu/controllers/UserController.dart';
+import 'package:itu/models/Event.dart';
+import 'package:itu/models/User.dart';
+import 'package:itu/views/components/event_card.dart';
 
 class UserPage extends StatefulWidget {
   final Function navigateToNewPage;
@@ -10,69 +15,196 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
+  final UserController _userController = UserController();
+  final EventController _eventController = EventController();
+
+  Future<User?>? userFuture;
+  Stream<List<Event>>? eventsStream;
+  String? organiserId;
+
   @override
-  Widget build(BuildContext context) {
-    return Align(
-        alignment: Alignment.center,
-        child: Container(
-          width: 360,
-          height: 675,
-          clipBehavior: Clip.antiAlias,
-          decoration: const BoxDecoration(color: Colors.black),
-          child: Stack(
-            children: [
-              Positioned(
-                left: 106,
-                top: 85,
+  void initState() {
+    super.initState();
+    userFuture = _userController.fetchAndAssignUser();
+    userFuture!.then((user) {
+      organiserId = user!.id;
+      print("Organiser ID: $organiserId");
+      eventsStream = _eventController.getEventsByOrganiser(organiserId!);
+    });
+  }
+
+  Widget buildUser() {
+    return FutureBuilder<User?>(
+      future: userFuture,
+      builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+        if (!snapshot.hasData) {
+          return const Text('Loading...');
+        }
+
+        User? user = snapshot.data;
+
+        organiserId = user!.id;
+
+        return Stack(
+          children: [
+            Positioned(
+              left: 106,
+              top: 85,
+              child: Container(
+                width: 150,
+                height: 150,
+                clipBehavior: Clip.antiAlias,
+                decoration: ShapeDecoration(
+                  color: const Color(0xFF3B3B3B),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                ),
                 child: Container(
                   width: 150,
                   height: 150,
                   clipBehavior: Clip.antiAlias,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFF3B3B3B),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                    ),
+                  decoration: const BoxDecoration(),
+                  child: SvgPicture.asset(
+                    'assets/icons/user_photo_icon.svg',
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                ),
+              ),
+            ),
+            Positioned(
+              left: 14,
+              top: 252,
+              child: SizedBox(
+                width: 334,
+                child: Text(
+                  user!.name,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 336),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: SingleChildScrollView(
+                  child: Column(
                     children: [
-                      Container(
-                        width: 150,
-                        height: 150,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: const BoxDecoration(),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/icons/user_photo_icon.svg',
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(
+                            maxHeight: 1000), // Adjust this value as needed
+                        child: buildUserEvents(),
+                      ),
+                      GestureDetector(
+                        onTap: () =>
+                            widget.navigateToNewPage('CreateEventPage'),
+                        child: Container(
+                          width: 328,
+                          height: 39,
+                          padding: const EdgeInsets.only(left: 35, right: 36),
+                          clipBehavior: Clip.antiAlias,
+                          decoration: ShapeDecoration(
+                            color: Colors.deepPurple,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
                             ),
-                          ],
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 21, vertical: 10),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 24,
+                                      height: 24,
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: const BoxDecoration(),
+                                      child: SvgPicture.asset(
+                                          "assets/icons/plus_icon.svg"),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    const Text(
+                                      'Vytvoriť nové podujatie',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-              const Positioned(
-                left: 14,
-                top: 252,
-                child: SizedBox(
-                  width: 334,
-                  child: Text(
-                    'Používateľ',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 24,
-                    ),
-                  ),
-                ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget buildUserEvents() {
+    return StreamBuilder(
+        stream: eventsStream,
+        builder: (context, snapshot) {
+          print('StreamBuilder builder called'); // Print statement
+          if (!snapshot.hasData) {
+            print('No data yet'); // Print statement
+            return const Text('Loading...');
+          }
+
+          List<Event> events = snapshot.data!;
+          print('Received ${events.length} events'); // Print statement
+
+          // return ListView.builder(
+          //   shrinkWrap: true,
+          //   itemCount: events.length,
+          //   itemBuilder: (context, index) {
+          //     print(
+          //         'Building event card for event ${events[index].name}'); // Print statement
+          //     return EventCard(event: events[index]);
+          //   },
+          // );
+
+          return SingleChildScrollView(
+            child: Column(
+              children: List.generate(
+                events.length,
+                (index) {
+                  return EventCard(event: events[index]);
+                },
               ),
+            ),
+          );
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+        alignment: Alignment.center,
+        child: Container(
+          width: 360,
+          height: 1000,
+          clipBehavior: Clip.antiAlias,
+          decoration: const BoxDecoration(color: Colors.black),
+          child: Stack(
+            children: [
+              buildUser(),
               const Positioned(
                 left: 21,
                 top: 306,
@@ -114,199 +246,70 @@ class _UserPageState extends State<UserPage> {
                   child: SvgPicture.asset('assets/icons/logout_icon.svg'),
                 ),
               ),
-              Positioned(
-                left: 100,
-                top: -12,
-                child: Container(
-                  width: 24,
-                  height: 24,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: const BoxDecoration(),
-                  child: const Stack(
-                    children: [
-                      Positioned(
-                        left: 3,
-                        top: 3,
-                        child: SizedBox(
-                          width: 18,
-                          height: 18,
-                          // child: Stack(children: [
-                          // ,
-                          // ]),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 16,
-                top: 336,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 314,
-                      height: 132,
-                      decoration: const BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0x3F000000),
-                            blurRadius: 4,
-                            offset: Offset(0, 4),
-                            spreadRadius: 0,
-                          )
-                        ],
-                      ),
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            left: 149,
-                            top: 0,
-                            child: Container(
-                              width: 165,
-                              height: 132,
-                              decoration: const ShapeDecoration(
-                                color: Color(0xFF3B3B3B),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(24),
-                                    bottomRight: Radius.circular(24),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            left: 0,
-                            top: 0,
-                            child: Container(
-                              width: 149,
-                              height: 132,
-                              decoration: const ShapeDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage('assets/placeholder.png'),
-                                  fit: BoxFit.fill,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(24),
-                                    bottomLeft: Radius.circular(24),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Positioned(
-                            left: 162,
-                            top: 42.31,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: 152,
-                                  child: Text(
-                                    'Najlepšia párty',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 115,
-                                  child: Text(
-                                    '6.12.2023',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 148,
-                                  child: Text(
-                                    'Fléda',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Positioned(
-                            left: 283,
-                            top: 13,
-                            child: Container(
-                              width: 15,
-                              height: 15,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: const BoxDecoration(),
-                              child: SvgPicture.asset(
-                                  'assets/icons/edit_icon.svg'),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    GestureDetector(
-                      onTap: () => widget.navigateToNewPage('CreateEventPage'),
-                      child: Container(
-                        width: 328,
-                        height: 39,
-                        padding: const EdgeInsets.only(left: 35, right: 36),
-                        clipBehavior: Clip.antiAlias,
-                        decoration: ShapeDecoration(
-                          color: Colors.deepPurple,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 21, vertical: 10),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 24,
-                                    height: 24,
-                                    clipBehavior: Clip.antiAlias,
-                                    decoration: const BoxDecoration(),
-                                    child: SvgPicture.asset(
-                                        "assets/icons/plus_icon.svg"),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  const Text(
-                                    'Vytvoriť nové podujatie',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Positioned(
+              //   left: 16,
+              //   top: 336,
+              //   child: Column(
+              //     mainAxisSize: MainAxisSize.min,
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     crossAxisAlignment: CrossAxisAlignment.center,
+              //     children: [
+              //       // Container(
+              //       //   width: 328,
+              //       //   child: buildUserEvents(),
+              //       // ),
+              //       const SizedBox(height: 8),
+              //       GestureDetector(
+              //         onTap: () => widget.navigateToNewPage('CreateEventPage'),
+              //         child: Container(
+              //           width: 328,
+              //           height: 39,
+              //           padding: const EdgeInsets.only(left: 35, right: 36),
+              //           clipBehavior: Clip.antiAlias,
+              //           decoration: ShapeDecoration(
+              //             color: Colors.deepPurple,
+              //             shape: RoundedRectangleBorder(
+              //               borderRadius: BorderRadius.circular(24),
+              //             ),
+              //           ),
+              //           child: Row(
+              //             mainAxisSize: MainAxisSize.min,
+              //             mainAxisAlignment: MainAxisAlignment.center,
+              //             crossAxisAlignment: CrossAxisAlignment.center,
+              //             children: [
+              //               Container(
+              //                 padding: const EdgeInsets.symmetric(
+              //                     horizontal: 21, vertical: 10),
+              //                 child: Row(
+              //                   mainAxisSize: MainAxisSize.min,
+              //                   mainAxisAlignment: MainAxisAlignment.center,
+              //                   crossAxisAlignment: CrossAxisAlignment.center,
+              //                   children: [
+              //                     Container(
+              //                       width: 24,
+              //                       height: 24,
+              //                       clipBehavior: Clip.antiAlias,
+              //                       decoration: const BoxDecoration(),
+              //                       child: SvgPicture.asset(
+              //                           "assets/icons/plus_icon.svg"),
+              //                     ),
+              //                     const SizedBox(width: 10),
+              //                     const Text(
+              //                       'Vytvoriť nové podujatie',
+              //                       style: TextStyle(
+              //                         fontSize: 16,
+              //                       ),
+              //                     ),
+              //                   ],
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ));

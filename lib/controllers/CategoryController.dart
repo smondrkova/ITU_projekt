@@ -22,9 +22,3 @@ class CategoryController {
     }).toList();
   }
 }
-
-// possible foreign key solution:
-// FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-// CollectionReference itemsRef = rootRef.collection("items");
-// Query query = itemsRef.whereEqualTo("postedBy", user_id);
-// link: https://stackoverflow.com/questions/50659543/how-to-set-foreign-keys-in-firestore

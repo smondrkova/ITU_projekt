@@ -19,6 +19,50 @@ class EventDetail extends StatefulWidget {
 class _EventDetailState extends State<EventDetail> {
   bool isFavorite = false;
 
+  Widget buildButton(String text, Color color, [Widget? page]) {
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => page ?? const Placeholder(),
+        ),
+      ),
+      child: SizedBox(
+        width: 339,
+        height: 52,
+        child: Stack(
+          children: [
+            Positioned(
+              left: 0,
+              top: 0,
+              child: Container(
+                width: 339,
+                height: 52,
+                decoration: ShapeDecoration(
+                  color: color,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                text,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +117,15 @@ class _EventDetailState extends State<EventDetail> {
                           ),
                         ),
                         Text(
-                          widget.event.location,
+                          widget.event.place_name,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          widget.event.place_address,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 20,
@@ -129,122 +181,18 @@ class _EventDetailState extends State<EventDetail> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  GestureDetector(
-                    child: SizedBox(
-                      width: 339,
-                      height: 52,
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            left: 0,
-                            top: 0,
-                            child: Container(
-                              width: 339,
-                              height: 52,
-                              decoration: ShapeDecoration(
-                                color: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(24),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Vstupenky',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  widget.event.ticketSellLink != ''
+                      ? buildButton("Vstupenky", Colors.white, null)
+                      : const SizedBox.shrink(),
                   const SizedBox(height: 8),
-                  GestureDetector(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ReviewsPage(eventId: widget.event.id),
-                      ),
-                    ),
-                    child: SizedBox(
-                      width: 339,
-                      height: 52,
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: 339,
-                            height: 52,
-                            decoration: ShapeDecoration(
-                              color: Colors.deepPurple,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24),
-                              ),
-                            ),
-                          ),
-                          const Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Recenzie',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  GestureDetector(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SendInvitePage(),
-                      ),
-                    ),
-                    child: SizedBox(
-                      width: 339,
-                      height: 52,
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            left: 0,
-                            top: 0,
-                            child: Container(
-                              width: 339,
-                              height: 52,
-                              decoration: ShapeDecoration(
-                                color: const Color.fromARGB(255, 122, 60, 194),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(24),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Poslať pozvánku',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  if (DateTime.now().isBefore(widget.event.date_time))
+                    buildButton(
+                        "Poslať pozvánku",
+                        const Color.fromARGB(255, 122, 60, 194),
+                        const SendInvitePage()),
+                  if (DateTime.now().isAfter(widget.event.date_time))
+                    buildButton("Recenzie", Colors.deepPurple,
+                        ReviewsPage(eventId: widget.event.id)),
                 ],
               ),
             ),

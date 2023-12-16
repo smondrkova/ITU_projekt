@@ -44,20 +44,21 @@ class _HomePageState extends State<HomePage> {
         //navigateToNewPage: navigateToNewPage,
         category: Category(id: '', name: ''),
       ),
-      EventDetail(
-        //navigateToNewPage: navigateToNewPage
-        event: Event(
-          id: '',
-          name: '',
-          date_time: DateTime.now(),
-          location: '',
-          description: '',
-          categoryId: '',
-          price: 0.0,
-          ticketSellLink: '',
-          photoUrl: '',
-        ),
-      ),
+      // EventDetail(
+      //   //navigateToNewPage: navigateToNewPage
+      //   event: Event(
+      //     id: '',
+      //     name: '',
+      //     date_time: DateTime.now(),
+      //     location: '',
+      //     description: '',
+      //     categoryId: '',
+      //     organiserId: '',
+      //     price: 0.0,
+      //     ticketSellLink: '',
+      //     photoUrl: '',
+      //   ),
+      // ),
     ];
   }
 
@@ -204,43 +205,41 @@ class _HomeContentState extends State<HomeContent> {
   final EventController _eventController = EventController();
 
   Widget buildEventsListView() {
-    return Container(
-      child: StreamBuilder<List<Event>>(
-        stream: _eventController.getEventsForHomePage(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Text('Loading...');
-          }
+    return StreamBuilder<List<Event>>(
+      stream: _eventController.getEventsForHomePage(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Text('Loading...');
+        }
 
-          List<Event> events = snapshot.data!;
+        List<Event> events = snapshot.data!;
 
-          return ListView.builder(
-            itemCount: events.length,
-            itemBuilder: (context, index) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // sem pojdu event cards
-                  GestureDetector(
-                    // onTap: () => Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) =>
-                    //         EventDetail(event: events[index]),
-                    //   ),
-                    // ),
-                    child: EventCard(
-                      event: events[index],
-                    ),
+        return ListView.builder(
+          itemCount: events.length,
+          itemBuilder: (context, index) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // sem pojdu event cards
+                GestureDetector(
+                  // onTap: () => Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) =>
+                  //         EventDetail(event: events[index]),
+                  //   ),
+                  // ),
+                  child: EventCard(
+                    event: events[index],
                   ),
-                ],
-              );
-            },
-          );
-        },
-      ),
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 
@@ -248,146 +247,144 @@ class _HomeContentState extends State<HomeContent> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(25.0, 50.0, 25.0, 25.0),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              width: 153,
-              height: 43,
-              child: Text(
-                'Čo je nové',
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            width: 153,
+            height: 43,
+            child: Text(
+              'Čo je nové',
             ),
-            Container(
-              width: 340,
-              height: 186,
-              padding: const EdgeInsets.only(
-                top: 116,
-                left: 30,
-                right: 80,
-                bottom: 14,
+          ),
+          Container(
+            width: 340,
+            height: 186,
+            padding: const EdgeInsets.only(
+              top: 116,
+              left: 30,
+              right: 80,
+              bottom: 14,
+            ),
+            clipBehavior: Clip.antiAlias,
+            decoration: ShapeDecoration(
+              image: const DecorationImage(
+                image: AssetImage('assets/placeholder.png'),
+                fit: BoxFit.cover,
               ),
-              clipBehavior: Clip.antiAlias,
-              decoration: ShapeDecoration(
-                image: const DecorationImage(
-                  image: AssetImage('assets/placeholder.png'),
-                  fit: BoxFit.cover,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24.0),
-                ),
-                shadows: const [
-                  BoxShadow(
-                    color: Color(0x3F000000),
-                    blurRadius: 4,
-                    offset: Offset(0, 4),
-                    spreadRadius: 0,
-                  )
-                ],
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24.0),
               ),
-              child: const Row(
+              shadows: const [
+                BoxShadow(
+                  color: Color(0x3F000000),
+                  blurRadius: 4,
+                  offset: Offset(0, 4),
+                  spreadRadius: 0,
+                )
+              ],
+            ),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 230,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 152,
+                        child: Text(
+                          'Najlepšia párty',
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 234,
+                        child: Text(
+                          '6.12.2023',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 234,
+                        child: Text(
+                          'Fléda',
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: SizedBox(
+              width: 50,
+              height: 10,
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: 230,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 152,
-                          child: Text(
-                            'Najlepšia párty',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 234,
-                          child: Text(
-                            '6.12.2023',
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 234,
-                          child: Text(
-                            'Fléda',
-                            style: TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ],
+                  Container(
+                    width: 10,
+                    height: 10,
+                    decoration: const ShapeDecoration(
+                      color: Color(0xFFEFF0F4),
+                      shape: OvalBorder(),
+                    ),
+                  ),
+                  Container(
+                    width: 10,
+                    height: 10,
+                    decoration: const ShapeDecoration(
+                      color: Color(0x7FEFF0F4),
+                      shape: OvalBorder(),
+                    ),
+                  ),
+                  Container(
+                    width: 10,
+                    height: 10,
+                    decoration: const ShapeDecoration(
+                      color: Color(0x7FEFF0F4),
+                      shape: OvalBorder(),
                     ),
                   ),
                 ],
               ),
             ),
-            Align(
-              alignment: Alignment.center,
-              child: SizedBox(
-                width: 50,
-                height: 10,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 10,
-                      height: 10,
-                      decoration: const ShapeDecoration(
-                        color: Color(0xFFEFF0F4),
-                        shape: OvalBorder(),
-                      ),
-                    ),
-                    Container(
-                      width: 10,
-                      height: 10,
-                      decoration: const ShapeDecoration(
-                        color: Color(0x7FEFF0F4),
-                        shape: OvalBorder(),
-                      ),
-                    ),
-                    Container(
-                      width: 10,
-                      height: 10,
-                      decoration: const ShapeDecoration(
-                        color: Color(0x7FEFF0F4),
-                        shape: OvalBorder(),
-                      ),
-                    ),
-                  ],
-                ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          const SizedBox(
+            width: 287,
+            height: 30,
+            child: Text(
+              'Aktuálne populárne',
+              style: TextStyle(
+                fontSize: 24,
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            const SizedBox(
-              width: 287,
-              height: 30,
-              child: Text(
-                'Aktuálne populárne',
-                style: TextStyle(
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            Container(
-              height: 500,
-              child: buildEventsListView(),
-            ),
-          ],
-        ),
+          ),
+          Container(
+            height: 500,
+            child: buildEventsListView(),
+          ),
+        ],
       ),
     );
   }

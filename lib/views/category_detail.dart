@@ -90,10 +90,10 @@ class _CategoryDetailState extends State<CategoryDetail> {
                     ),
                     Positioned(
                       left: 19,
-                      top: 90,
+                      top: 140,
                       child: SizedBox(
-                        width: 227,
-                        height: 99,
+                        //width: 227,
+                        //height: 99,
                         child: Text(
                           widget.category.name,
                           style: const TextStyle(
