@@ -116,7 +116,7 @@ class EventController {
       description: data['description'] ?? '',
       price: (data['price'] ?? 0).toDouble(),
       ticketSellLink: data['ticketSellLink'] ?? '',
-      photoUrl: data['photoUrl'] ?? '',
+      photoUrl: data['photoUrl'],
     );
   }
 }
