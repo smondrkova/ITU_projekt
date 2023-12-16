@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:itu/controllers/EventController.dart';
 import 'package:itu/models/Event.dart';
+import 'package:itu/views/components/favorite_button.dart';
 import 'package:itu/views/event_detail.dart';
 
 class EventCard extends StatelessWidget {
@@ -12,6 +14,8 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    EventController _eventController = EventController();
+
     return Column(children: [
       GestureDetector(
         onTap: () => Navigator.push(
@@ -83,7 +87,7 @@ class EventCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: 152,
+                      width: 130,
                       child: Text(
                         event.name,
                         style: const TextStyle(
@@ -112,6 +116,32 @@ class EventCard extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+              ),
+              Positioned(
+                left: 305,
+                top: 15,
+                child: SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: FutureBuilder<bool>(
+                    future: _eventController.isEventFavorite(event.id),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else {
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return FavoriteButton(
+                            eventId: event.id,
+                            isFavorite: snapshot.data ?? false,
+                          );
+                        }
+                      }
+                    },
+                  ),
                 ),
               ),
             ],

@@ -19,10 +19,16 @@ class _FavoriteButtonState extends State<FavoriteButton> {
   final EventController _eventController = EventController();
   late String svgasset;
 
+  void getFavorite() async {
+    isFavorite = await _eventController.isEventFavorite(widget.eventId);
+  }
+
   @override
   void initState() {
     super.initState();
     isFavorite = widget.isFavorite;
+    getFavorite();
+    print('Is favorite: $isFavorite');
     svgasset = isFavorite
         ? 'assets/icons/favorites_filled_icon.svg'
         : 'assets/icons/favorites_bold_icon.svg';
@@ -44,8 +50,8 @@ class _FavoriteButtonState extends State<FavoriteButton> {
         });
       },
       child: SizedBox(
-        width: 20,
-        height: 20,
+        width: 25,
+        height: 25,
         child: SvgPicture.asset(svgasset),
       ),
     );

@@ -263,8 +263,8 @@ class _EventDetailState extends State<EventDetail> {
                     left: 346,
                     top: 50,
                     child: FavoriteButton(
-                      isFavorite: isFavorite,
                       eventId: widget.event.id,
+                      isFavorite: isFavorite,
                     ),
                   ),
                   if (isOwner)
@@ -282,11 +282,9 @@ class _EventDetailState extends State<EventDetail> {
                             ),
                           );
 
-                          // fetch the new data from the database
                           widget.event = await _eventController
                               .getEventById(widget.event.id);
 
-                          // Refresh the page with the new data
                           setState(() {});
                         },
                         child: SizedBox(

@@ -169,8 +169,8 @@ class _HomePageState extends State<HomePage> {
                     _selectedIndex == 3
                         ? 'assets/icons/favorites_bold_icon.svg'
                         : 'assets/icons/favorites_icon.svg',
-                    width: 30.0,
-                    height: 30.0),
+                    width: 35.0,
+                    height: 35.0),
                 label: '',
               ),
               BottomNavigationBarItem(
@@ -178,8 +178,8 @@ class _HomePageState extends State<HomePage> {
                     _selectedIndex == 4
                         ? 'assets/icons/user_bold_icon.svg'
                         : 'assets/icons/user_icon.svg',
-                    width: 30.0,
-                    height: 30.0),
+                    width: 32.0,
+                    height: 32.0),
                 label: '',
               ),
             ],
