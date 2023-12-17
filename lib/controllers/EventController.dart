@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -75,6 +76,17 @@ class EventController {
         .doc(eventId)
         .get();
     return _getEventFromDocument(doc);
+  }
+
+  Future<Event> getRandomEvent() async {
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('events').get();
+    List<DocumentSnapshot> events = querySnapshot.docs;
+    if (events.isEmpty) {
+      throw Exception('No events found');
+    }
+    DocumentSnapshot randomEventDoc = events[Random().nextInt(events.length)];
+    return _getEventFromDocument(randomEventDoc);
   }
 
   String _formatDate(DateTime date) {
@@ -188,8 +200,8 @@ class EventController {
       localImagePath = await saveImageLocally(imageFile);
     }
 
-    String categoryId =
-        await _categoryController.getCategoryIdByName(event.categoryId);
+    // String categoryId =
+    //     await _categoryController.getCategoryIdByName(event.categoryId);
 
     User? user = await _userController.fetchAndAssignUser();
     if (user != null) {
@@ -201,7 +213,7 @@ class EventController {
       'date_time': event.date_time,
       'place_address': event.place_address,
       'place_name': event.place_name,
-      'category': categoryId,
+      'category': event.categoryId,
       'organiser': event.organiserId,
       'description': event.description,
       'price': event.price,

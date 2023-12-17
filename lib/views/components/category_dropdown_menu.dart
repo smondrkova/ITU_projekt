@@ -59,11 +59,13 @@ class _CategoryDropdownMenuState extends State<CategoryDropdownMenu> {
                       style: const TextStyle(color: Colors.white)),
                 );
               }).toList(),
-              onChanged: (String? newValue) {
-                widget.event.categoryId = newValue!;
+              onChanged: (String? newValue) async {
+                print('New value: $newValue');
+                widget.event.categoryId =
+                    await _categoryController.getCategoryIdByName(newValue!);
               },
               onSaved: (String? value) {
-                widget.event.categoryId = value!;
+                widget.event.categoryId = widget.event.categoryId;
               },
             ),
           );

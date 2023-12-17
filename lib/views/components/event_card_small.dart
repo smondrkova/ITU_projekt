@@ -33,7 +33,7 @@ class EventCardSmall extends StatelessWidget {
                   decoration: ShapeDecoration(
                     image: DecorationImage(
                       image: event.photoUrl != ''
-                          ? Image.file(File(event.photoUrl)).image
+                          ? AssetImage(event.photoUrl)
                           : const AssetImage('assets/placeholder.png'),
                       fit: BoxFit.cover,
                     ),

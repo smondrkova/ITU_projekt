@@ -18,11 +18,11 @@ class EventForm extends StatefulWidget {
 class _EventFormState extends State<EventForm> {
   final EventController _eventController = EventController();
 
-  final _dateController = TextEditingController(
+  var _dateController = TextEditingController(
     text: DateFormat('dd.MM.yyyy').format(DateTime.now()),
   );
 
-  final _timeController = TextEditingController(
+  var _timeController = TextEditingController(
     text: DateFormat('HH:mm').format(DateTime.now()),
   );
 
@@ -48,6 +48,17 @@ class _EventFormState extends State<EventForm> {
         print('No image selected.');
       }
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _dateController = TextEditingController(
+      text: DateFormat('dd.MM.yyyy').format(widget.event.date_time),
+    );
+    _timeController = TextEditingController(
+      text: DateFormat('HH:mm').format(widget.event.date_time),
+    );
   }
 
   @override
@@ -78,9 +89,7 @@ class _EventFormState extends State<EventForm> {
                         image: _image == null
                             ? DecorationImage(
                                 image: (widget.event.photoUrl != '')
-                                    ? FileImage(
-                                        File(widget.event.photoUrl),
-                                      )
+                                    ? AssetImage(widget.event.photoUrl)
                                     : const AssetImage(
                                         'assets/placeholder.png',
                                       ) as ImageProvider<Object>,
@@ -264,7 +273,8 @@ class _EventFormState extends State<EventForm> {
                           onTap: () async {
                             final TimeOfDay? pickedTime = await showTimePicker(
                               context: context,
-                              initialTime: TimeOfDay.now(),
+                              initialTime: TimeOfDay.fromDateTime(
+                                  widget.event.date_time),
                             );
 
                             if (pickedTime != null) {

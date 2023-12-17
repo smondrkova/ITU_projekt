@@ -17,6 +17,8 @@ class EditEventPage extends StatefulWidget {
 }
 
 class _EditEventPageState extends State<EditEventPage> {
+  EventController _eventController = EventController();
+
   @override
   Widget build(BuildContext context) {
     print('Start of event form widget build: ${widget.event.categoryId}');
@@ -54,6 +56,20 @@ class _EditEventPageState extends State<EditEventPage> {
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w700,
                         height: 0,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 120,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        _eventController.deleteEvent(widget.event.id);
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        width: 25,
+                        height: 25,
+                        child: SvgPicture.asset('assets/icons/delete_icon.svg'),
                       ),
                     ),
                   ],
