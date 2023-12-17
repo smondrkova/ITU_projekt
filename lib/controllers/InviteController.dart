@@ -4,6 +4,8 @@
 /// InviteController class for managing invites.
 ///
 /// 17.12.2023
+/// 
+/// @author Erik Žák, xzaker00
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../models/Invite.dart';

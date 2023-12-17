@@ -8,6 +8,7 @@
 ///
 /// @author Barbora Šmondrková xsmond00
 /// @author Matej Tomko, xtomko06
+/// @author Erik Žák, xzaker00
 ///
 
 import 'dart:io';
