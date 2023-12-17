@@ -18,8 +18,7 @@ import 'package:itu/views/components/event_card.dart';
 import 'package:itu/views/create_event.dart';
 
 class UserPage extends StatefulWidget {
-  final Function navigateToNewPage;
-  const UserPage({required this.navigateToNewPage, Key? key}) : super(key: key);
+  const UserPage({Key? key}) : super(key: key);
 
   @override
   State<UserPage> createState() => _UserPageState();
@@ -160,8 +159,9 @@ class _UserPageState extends State<UserPage> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => //widget.navigateToNewPage('UserInvitesPage'),
-                          Navigator.push(
+                        onTap:
+                            () => //widget.navigateToNewPage('UserInvitesPage'),
+                                Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => UserInvitesPage()),
@@ -169,7 +169,8 @@ class _UserPageState extends State<UserPage> {
                         child: Container(
                           width: 328,
                           height: 39,
-                          margin: const EdgeInsets.only(top: 10), // Adjust the spacing as needed
+                          margin: const EdgeInsets.only(
+                              top: 10), // Adjust the spacing as needed
                           padding: const EdgeInsets.only(left: 35, right: 36),
                           clipBehavior: Clip.antiAlias,
                           decoration: ShapeDecoration(
