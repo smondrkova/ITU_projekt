@@ -75,7 +75,6 @@ Stream<List<Event>> getInvitedEvents(String userId) {
   return FirebaseFirestore.instance
       .collection('invites')
       .where('user', isEqualTo: userId)
-      .where('seen', isEqualTo: false)
       .snapshots()
       .asyncMap((snapshot) => _getEventsFromAnotherTable(snapshot));
 }

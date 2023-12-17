@@ -147,47 +147,33 @@ class _UserInvitesPageState extends State<UserInvitesPage> {
     );
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       // Customize your app bar as needed
-  //       title: Text('Your Invites'),
-  //     ),
-  //     body: Container(
-  //       width: 365,
-  //       height: 640,
-  //       clipBehavior: Clip.antiAlias,
-  //       decoration: const BoxDecoration(color: Colors.black),
-  //       child: Stack(
-  //         children: [
-  //           const Positioned(
-  //             left: 25,
-  //             top: 50,
-  //             child: SizedBox(
-  //               width: 153,
-  //               height: 27,
-  //               child: Text(
-  //                 'Tvoje pozvánky',
-  //                 style: TextStyle(
-  //                   fontSize: 24,
-  //                   color: Colors.white, // Set the desired text color
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //           Positioned(
-  //             left: 23,
-  //             top: 90,
-  //             child: Container(
-  //               child: buildInvitedEvents(),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+  Future<void> _deleteInvites(String userId) async {
+    try {
+      await _inviteController.deleteInvitesByUserId(currentUserId);
+
+      // Refresh the invites page
+      if (mounted) {
+        setState(() {});
+      }
+
+      // Display a success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Pozvánky boli úspešne odstránené!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      // Display an error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              'Vyskytla sa chyba pri odstraňovaní pozvánok. Skúste to znova.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -231,7 +217,7 @@ class _UserInvitesPageState extends State<UserInvitesPage> {
             bottom: 15, // Adjust the bottom position as needed
             child: GestureDetector(
               onTap: () {
-                // Add your onTap logic for the button here
+                _deleteInvites(currentUserId);
               },
               child: Container(
                 width: 375,

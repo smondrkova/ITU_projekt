@@ -44,7 +44,7 @@ class _SendInvitePageState extends State<SendInvitePage> {
           ),
           GestureDetector(
             onTap: () {
-              UserSearchDelegate delegate = UserSearchDelegate(eventId: widget.eventId);
+              UserSearchDelegate delegate = UserSearchDelegate(context: context, eventId: widget.eventId);
               showSearch(
                 context: context,
                 delegate: delegate,
@@ -114,9 +114,10 @@ class _SendInvitePageState extends State<SendInvitePage> {
 class UserSearchDelegate extends SearchDelegate {
   final UserController _userController = UserController();
   final InviteController _inviteController = InviteController();
+  final BuildContext context;
   final String eventId;
 
-  UserSearchDelegate({required this.eventId});
+  UserSearchDelegate({required this.context, required this.eventId});
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -170,8 +171,7 @@ class UserSearchDelegate extends SearchDelegate {
                 ),
               ),
               onTap: () {
-                // navigateItem(context, displayUsers[index]);
-                _inviteController.sendInvite(eventId, displayUsers[index].id);
+                _sendInviteAndNavigateBack(context, eventId, displayUsers[index].id);
               },
             );
           },
@@ -209,8 +209,7 @@ class UserSearchDelegate extends SearchDelegate {
                 ),
               ),
               onTap: () {
-                // navigateItem(context, displayUsers[index]);
-                _inviteController.sendInvite(eventId, displayUsers[index].id);
+                _sendInviteAndNavigateBack(context, eventId, displayUsers[index].id);
               },
             );
           },
@@ -222,5 +221,32 @@ class UserSearchDelegate extends SearchDelegate {
   bool _containsFullName(User user, String query) {
     final fullName = '${user.name.toLowerCase()} ${user.surname.toLowerCase()}';
     return fullName.contains(query);
+  }
+
+  Future<void> _sendInviteAndNavigateBack(BuildContext context, String event, String user) async {
+    try {
+      // Replace the following line with the actual code to send an invite
+      await _inviteController.sendInvite(event, user);
+
+      // Display a success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Pozvánka bola úspešne odoslaná!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+
+      // Navigate back to the EventDetail screen
+      Navigator.pop(context);
+      Navigator.pop(context);
+    } catch (e) {
+      // Display an error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Vyskytla sa chyba pri odosielaní pozvánky. Skúste to znova.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }

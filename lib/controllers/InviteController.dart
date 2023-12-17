@@ -116,7 +116,7 @@ class InviteController {
       QuerySnapshot querySnapshot =
           await FirebaseFirestore.instance
             .collection('invites')
-            .where('userId', isEqualTo: userId)
+            .where('user', isEqualTo: userId)
             .get();
 
       if (querySnapshot.docs.isNotEmpty) {
