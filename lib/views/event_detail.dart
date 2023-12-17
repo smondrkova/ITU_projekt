@@ -231,7 +231,7 @@ class _EventDetailState extends State<EventDetail> {
                   buildButton(
                       "Poslať pozvánku",
                       const Color.fromARGB(255, 122, 60, 194),
-                      const SendInvitePage(eventId: widget.event.id)),
+                      SendInvitePage(eventId: widget.event.id)),
                 if (DateTime.now().isAfter(event.date_time))
                   buildButton("Recenzie", Colors.deepPurple,
                       ReviewsPage(eventId: event.id)),

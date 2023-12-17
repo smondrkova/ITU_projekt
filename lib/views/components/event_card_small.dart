@@ -43,7 +43,7 @@ class EventCardSmall extends StatelessWidget {
                     image: AssetImage(event.getAssetPath()),
                     fit: BoxFit.cover,
                   ),
-                  shape: RoundedRectangleBorder(
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(24),
                       topRight: Radius.circular(24),
@@ -58,8 +58,8 @@ class EventCardSmall extends StatelessWidget {
               child: Container(
                 width: 350,
                 height: 62,
-                decoration: ShapeDecoration(
-                  color: const Color(0xFF3B3B3B),
+                decoration: const ShapeDecoration(
+                  color: Color(0xFF3B3B3B),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(24),
