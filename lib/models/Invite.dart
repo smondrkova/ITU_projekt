@@ -1,13 +1,13 @@
 class Invite {
   String id;
-  String eventId;
-  String userId;
+  String event;
+  String user;
   bool seen;
 
   Invite({
     required this.id,
-    required this.eventId,
-    required this.userId,
+    required this.event,
+    required this.user,
     required this.seen,
   });
 }

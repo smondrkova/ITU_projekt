@@ -9,8 +9,8 @@ class InviteController {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
       return Invite(
         id: doc.id,
-        eventId: data['event'] ?? '',
-        userId: data['user'] ?? '',
+        event: data['event'] ?? '',
+        user: data['user'] ?? '',
         seen: data['seen'] ?? false,
       );
     }).toList();
@@ -60,5 +60,25 @@ class InviteController {
         );
       }).toList();
     });
+  }
+
+  Future<void> sendInvite(String eventId, String userId) async {
+    try {
+      Invite newInvite = Invite(
+        id: '', // Will be assigned by Firebase
+        event: eventId,
+        user: userId,
+        seen: false
+      );
+
+      await FirebaseFirestore.instance.collection('invites').add({
+        'event': newInvite.event,
+        'user': newInvite.user,
+        'seen': newInvite.seen,
+      });
+    } catch (e) {
+      print('Chyba pri pridávaní: $e');
+      rethrow; // Re-throw the exception for the caller to handle
+    }
   }
 }

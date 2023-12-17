@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:itu/controllers/InviteController.dart';
 import 'package:itu/models/User.dart';
 import 'package:itu/controllers/UserController.dart';
 
 
 class SendInvitePage extends StatefulWidget {
-  const SendInvitePage({super.key});
+  final String eventId;
+
+  const SendInvitePage({Key? key, required this.eventId}) : super(key: key);
 
   @override
   State<SendInvitePage> createState() => _SendInvitePageState();
@@ -41,9 +44,10 @@ class _SendInvitePageState extends State<SendInvitePage> {
           ),
           GestureDetector(
             onTap: () {
+              UserSearchDelegate delegate = UserSearchDelegate(eventId: widget.eventId);
               showSearch(
                 context: context,
-                delegate: UserSearchDelegate(),
+                delegate: delegate,
               );
             },
             child: Center(
@@ -109,6 +113,10 @@ class _SendInvitePageState extends State<SendInvitePage> {
 
 class UserSearchDelegate extends SearchDelegate {
   final UserController _userController = UserController();
+  final InviteController _inviteController = InviteController();
+  final String eventId;
+
+  UserSearchDelegate({required this.eventId});
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -161,9 +169,10 @@ class UserSearchDelegate extends SearchDelegate {
                   color: Colors.white,
                 ),
               ),
-              // onTap: () {
-              //   navigateItem(context, displayUsers[index]);
-              // },
+              onTap: () {
+                // navigateItem(context, displayUsers[index]);
+                _inviteController.sendInvite(displayUsers[index].id, eventId);
+              },
             );
           },
         );
@@ -199,9 +208,10 @@ class UserSearchDelegate extends SearchDelegate {
                   color: Colors.white,
                 ),
               ),
-              // onTap: () {
-              //   navigateItem(context, displayUsers[index]);
-              // },
+              onTap: () {
+                // navigateItem(context, displayUsers[index]);
+                _inviteController.sendInvite(displayUsers[index].id, eventId);
+              },
             );
           },
         );
