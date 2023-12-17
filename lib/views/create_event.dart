@@ -1,5 +1,13 @@
-import 'dart:io';
+/// File: /lib/views/create_event.dart
+/// Project: Evento
+///
+/// Create event page view.
+///
+/// 17.12.2023
+///
+/// @author Barbora Šmondrková xsmond00
 
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,7 +21,6 @@ import 'package:itu/models/User.dart';
 import 'package:itu/views/home.dart';
 
 class CreateEventPage extends StatefulWidget {
-  //final Function navigateToNewPage;
   const CreateEventPage({Key? key}) : super(key: key);
 
   @override
@@ -73,37 +80,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
     });
   }
 
-  // Widget _buildFormText(String text, String value) {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-  //     child: TextFormField(
-  //       textAlignVertical: TextAlignVertical.center,
-  //       style: const TextStyle(
-  //         color: Colors.white,
-  //         fontSize: 16,
-  //       ),
-  //       decoration: const InputDecoration(
-  //         border: InputBorder.none,
-  //         hintText: 'Vyplň meno podujatia',
-  //         hintStyle: TextStyle(
-  //           color: Color.fromARGB(110, 255, 255, 255),
-  //         ),
-  //       ),
-  //       onSaved: (value) {
-  //         if (value == "name") {
-  //           event.name = value!;
-  //         } else if (value == "location") {
-  //           event.location = value!;
-  //         } else if (value == "description") {
-  //           event.description = value!;
-  //         } else if (value == "ticketSellLink") {
-  //           event.ticketSellLink = value!;
-  //         }
-  //       },
-  //     ),
-  //   );
-  // }
-
   Widget _buildInsertImage() {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -154,27 +130,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   ),
                 ),
               ),
-
-              // Positioned(
-              //   left: 25,
-              //   top: 25,
-              //   child: GestureDetector(
-              //     onTap: getImage,
-              //     child: Container(
-              //       width: 225,
-              //       height: 225,
-              //       clipBehavior: Clip.antiAlias,
-              //       decoration: const BoxDecoration(),
-              //       // profile image
-              //       child: _image == null
-              //           ? Image.asset(
-              //               'assets/placeholder.png',
-              //               fit: BoxFit.cover,
-              //             )
-              //           : Image.file(_image!),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
@@ -436,8 +391,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(20, 18, 0, 0),
                         child: TextFormField(
-                          // textAlignVertical: TextAlignVertical.center,
-                          // keyboardType: TextInputType.datetime,
                           controller: _timeController,
                           style: const TextStyle(
                             color: Colors.white,
@@ -459,7 +412,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                   pickedTime.minute);
                               _timeController.text =
                                   DateFormat('HH:mm').format(pickedDateTime);
-                              // Do something with the picked time
                             }
                           },
                         ),
@@ -928,7 +880,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
         );
 
       default:
-        return Container(); // Return an empty container by default
+        return Container();
     }
   }
 

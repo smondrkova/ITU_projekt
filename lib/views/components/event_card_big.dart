@@ -1,3 +1,12 @@
+/// File: /lib/views/components/event_card_big.dart
+/// Project: Evento
+///
+/// Event card on home page component.
+///
+/// 17.12.2023
+///
+/// @author Barbora Šmondrková xsmond00
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:itu/controllers/EventController.dart';

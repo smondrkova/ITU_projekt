@@ -20,7 +20,6 @@ class CategoryController {
   }
 
   Future<String> getCategoryNameById(String id) async {
-    print('Getting category name by id: $id');
     DocumentSnapshot snapshot =
         await FirebaseFirestore.instance.collection('categories').doc(id).get();
     return (snapshot.data() as Map<String, dynamic>)['name'];

@@ -1,3 +1,12 @@
+/// File: /lib/views/user.dart
+/// Project: Evento
+///
+/// User page view.
+///
+/// 17.12.2023
+///
+/// @author Barbora Šmondrková xsmond00
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:itu/controllers/EventController.dart';
@@ -29,7 +38,6 @@ class _UserPageState extends State<UserPage> {
     userFuture = _userController.fetchAndAssignUser();
     userFuture!.then((user) {
       organiserId = user!.id;
-      print("Organiser ID: $organiserId");
       eventsStream = _eventController.getEventsByOrganiser(organiserId!);
     });
   }
@@ -78,7 +86,7 @@ class _UserPageState extends State<UserPage> {
               child: SizedBox(
                 width: 334,
                 child: Text(
-                  user!.name,
+                  user.name,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 24,
@@ -94,15 +102,14 @@ class _UserPageState extends State<UserPage> {
                   child: Column(
                     children: [
                       ConstrainedBox(
-                        constraints: const BoxConstraints(
-                            maxHeight: 1000), // Adjust this value as needed
+                        constraints: const BoxConstraints(maxHeight: 1000),
                         child: buildUserEvents(),
                       ),
                       GestureDetector(
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => CreateEventPage(),
+                            builder: (context) => const CreateEventPage(),
                           ),
                         ),
                         child: Container(
@@ -166,25 +173,11 @@ class _UserPageState extends State<UserPage> {
     return StreamBuilder(
         stream: eventsStream,
         builder: (context, snapshot) {
-          print('StreamBuilder builder called'); // Print statement
           if (!snapshot.hasData) {
-            print('No data yet'); // Print statement
             return const Text('Loading...');
           }
 
           List<Event> events = snapshot.data!;
-          print('Received ${events.length} events'); // Print statement
-
-          // return ListView.builder(
-          //   shrinkWrap: true,
-          //   itemCount: events.length,
-          //   itemBuilder: (context, index) {
-          //     print(
-          //         'Building event card for event ${events[index].name}'); // Print statement
-          //     return EventCard(event: events[index]);
-          //   },
-          // );
-
           return SingleChildScrollView(
             child: Column(
               children: List.generate(
@@ -251,70 +244,6 @@ class _UserPageState extends State<UserPage> {
                   child: SvgPicture.asset('assets/icons/logout_icon.svg'),
                 ),
               ),
-              // Positioned(
-              //   left: 16,
-              //   top: 336,
-              //   child: Column(
-              //     mainAxisSize: MainAxisSize.min,
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     crossAxisAlignment: CrossAxisAlignment.center,
-              //     children: [
-              //       // Container(
-              //       //   width: 328,
-              //       //   child: buildUserEvents(),
-              //       // ),
-              //       const SizedBox(height: 8),
-              //       GestureDetector(
-              //         onTap: () => widget.navigateToNewPage('CreateEventPage'),
-              //         child: Container(
-              //           width: 328,
-              //           height: 39,
-              //           padding: const EdgeInsets.only(left: 35, right: 36),
-              //           clipBehavior: Clip.antiAlias,
-              //           decoration: ShapeDecoration(
-              //             color: Colors.deepPurple,
-              //             shape: RoundedRectangleBorder(
-              //               borderRadius: BorderRadius.circular(24),
-              //             ),
-              //           ),
-              //           child: Row(
-              //             mainAxisSize: MainAxisSize.min,
-              //             mainAxisAlignment: MainAxisAlignment.center,
-              //             crossAxisAlignment: CrossAxisAlignment.center,
-              //             children: [
-              //               Container(
-              //                 padding: const EdgeInsets.symmetric(
-              //                     horizontal: 21, vertical: 10),
-              //                 child: Row(
-              //                   mainAxisSize: MainAxisSize.min,
-              //                   mainAxisAlignment: MainAxisAlignment.center,
-              //                   crossAxisAlignment: CrossAxisAlignment.center,
-              //                   children: [
-              //                     Container(
-              //                       width: 24,
-              //                       height: 24,
-              //                       clipBehavior: Clip.antiAlias,
-              //                       decoration: const BoxDecoration(),
-              //                       child: SvgPicture.asset(
-              //                           "assets/icons/plus_icon.svg"),
-              //                     ),
-              //                     const SizedBox(width: 10),
-              //                     const Text(
-              //                       'Vytvoriť nové podujatie',
-              //                       style: TextStyle(
-              //                         fontSize: 16,
-              //                       ),
-              //                     ),
-              //                   ],
-              //                 ),
-              //               ),
-              //             ],
-              //           ),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
             ],
           ),
         ));

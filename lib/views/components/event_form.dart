@@ -1,5 +1,13 @@
-import 'dart:io';
+/// File: /lib/views/components/event_form.dart
+/// Project: Evento
+///
+/// Event form for editing event.
+///
+/// 17.12.2023
+///
+/// @author Barbora Šmondrková xsmond00
 
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -263,8 +271,6 @@ class _EventFormState extends State<EventForm> {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(20, 18, 0, 0),
                         child: TextFormField(
-                          // textAlignVertical: TextAlignVertical.center,
-                          // keyboardType: TextInputType.datetime,
                           controller: _timeController,
                           style: const TextStyle(
                             color: Colors.white,
@@ -287,7 +293,6 @@ class _EventFormState extends State<EventForm> {
                                   pickedTime.minute);
                               _timeController.text =
                                   DateFormat('HH:mm').format(pickedDateTime);
-                              // Do something with the picked time
                             }
                           },
                         ),

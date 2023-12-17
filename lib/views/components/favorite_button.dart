@@ -1,3 +1,12 @@
+/// File: /lib/views/components/favorite_button.dart
+/// Project: Evento
+///
+/// Favorite button component.
+///
+/// 17.12.2023
+///
+/// @author Barbora Šmondrková xsmond00
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:itu/controllers/EventController.dart';

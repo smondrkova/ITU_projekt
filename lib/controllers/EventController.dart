@@ -1,3 +1,12 @@
+/// File: /lib/controllers/EventController.dart
+/// Project: Evento
+///
+/// EventController class for managing event data.
+///
+/// 17.12.2023
+///
+/// @author Barbora Šmondrková xsmond00
+
 import 'dart:io';
 import 'dart:math';
 
@@ -6,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:itu/controllers/CategoryController.dart';
 import 'package:itu/controllers/UserController.dart';
 import 'package:itu/models/User.dart';
-import 'package:timezone/timezone.dart';
 import '../models/Event.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,6 +26,7 @@ class EventController {
   final createFormKey = GlobalKey<FormState>();
   final editFormKey = GlobalKey<FormState>();
 
+  /// Returns stream of all events.
   Stream<List<Event>> getEvents() {
     return FirebaseFirestore.instance
         .collection('events')
@@ -25,6 +34,7 @@ class EventController {
         .map(_getEventsFromSnapshot);
   }
 
+  /// Returns stream of events for home page.
   Stream<List<Event>> getEventsForHomePage() {
     return FirebaseFirestore.instance
         .collection('events')
@@ -33,6 +43,7 @@ class EventController {
         .map(_getEventsFromSnapshot);
   }
 
+  /// Returns list of events from snapshot.
   List<Event> _getEventsFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((DocumentSnapshot doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -54,6 +65,7 @@ class EventController {
     }).toList();
   }
 
+  /// Fetches events with given category ID.
   Stream<List<Event>> getEventsByCategory(String categoryId) {
     return FirebaseFirestore.instance
         .collection('events')
@@ -62,6 +74,7 @@ class EventController {
         .map(_getEventsFromSnapshot);
   }
 
+  /// Fetches events with given organiser ID.
   Stream<List<Event>> getEventsByOrganiser(String organiserId) {
     return FirebaseFirestore.instance
         .collection('events')
@@ -70,6 +83,7 @@ class EventController {
         .map(_getEventsFromSnapshot);
   }
 
+  /// Fetches events with given event ID.
   Future<Event> getEventById(String eventId) async {
     DocumentSnapshot doc = await FirebaseFirestore.instance
         .collection('events')
@@ -78,6 +92,7 @@ class EventController {
     return _getEventFromDocument(doc);
   }
 
+  /// Fetches one random event from database.
   Future<Event> getRandomEvent() async {
     QuerySnapshot querySnapshot =
         await FirebaseFirestore.instance.collection('events').get();
@@ -93,6 +108,7 @@ class EventController {
     return DateFormat('yyyy-MM-dd HH:mm').format(date);
   }
 
+  /// Fetches all favourite events.
   Stream<List<Event>> getFavoriteEvents() {
     return FirebaseFirestore.instance
         .collection('favourites')
@@ -100,11 +116,11 @@ class EventController {
         .asyncMap((snapshot) => _getFavoriteEventsFromSnapshot(snapshot));
   }
 
+  /// Fetches list of favourite favourite events from snapshot.
   Future<List<Event>> _getFavoriteEventsFromSnapshot(
       QuerySnapshot snapshot) async {
     return Future.wait(snapshot.docs.map((doc) async {
       String eventId = (doc.data() as Map<String, dynamic>)['event'];
-      print("Fetching event with ID: $eventId");
       DocumentSnapshot eventDoc = await FirebaseFirestore.instance
           .collection('events')
           .doc(eventId)
@@ -115,7 +131,6 @@ class EventController {
 
   Event _getEventFromDocument(DocumentSnapshot doc) {
     if (doc.data() == null) {
-      // Handle the null case here. For example, return a default Event:
       return Event(
         id: '',
         name: '',
@@ -149,12 +164,14 @@ class EventController {
     );
   }
 
+  /// Adds event to favourites.
   void addEventToFavorites(String eventId) {
     FirebaseFirestore.instance.collection('favourites').add({
       'event': eventId,
     });
   }
 
+  /// Checks if event is favourite.
   Future<bool> isEventFavorite(String eventId) {
     return FirebaseFirestore.instance
         .collection('favourites')
@@ -163,18 +180,20 @@ class EventController {
         .then((snapshot) => snapshot.docs.isNotEmpty);
   }
 
+  /// Removes event from favourites.
   void removeEventFromFavorites(String eventId) {
     FirebaseFirestore.instance
         .collection('favourites')
         .where('event', isEqualTo: eventId)
         .get()
         .then((snapshot) {
-      snapshot.docs.forEach((doc) {
+      for (var doc in snapshot.docs) {
         doc.reference.delete();
-      });
+      }
     });
   }
 
+  /// Saves image locally.
   Future<String> saveImageLocally(File imageFile) async {
     final directory = await getApplicationDocumentsDirectory();
     final path = directory.path;
@@ -186,6 +205,7 @@ class EventController {
     return localImageFile.path;
   }
 
+  /// Creates event and saves it to database.
   void createEvent(Event event, File? imageFile) async {
     if (!createFormKey.currentState!.validate()) {
       return;
@@ -199,9 +219,6 @@ class EventController {
     } else {
       localImagePath = await saveImageLocally(imageFile);
     }
-
-    // String categoryId =
-    //     await _categoryController.getCategoryIdByName(event.categoryId);
 
     User? user = await _userController.fetchAndAssignUser();
     if (user != null) {
@@ -222,22 +239,27 @@ class EventController {
     });
   }
 
+  /// Deletes event from database.
   void deleteEvent(String eventId) {
+    bool isFavorite = isEventFavorite(eventId) as bool;
+    if (isFavorite) {
+      removeEventFromFavorites(eventId);
+    }
+
     FirebaseFirestore.instance.collection('events').doc(eventId).delete();
   }
 
+  /// Checks if user is event owner.
   Future<bool> isEventOwner(Event event) async {
-    print('Event id: ${event.organiserId}');
     User? user = await _userController.fetchAndAssignUser();
-    print("User: ${user!.id}");
     if (user != null) {
-      print("Event organiser ID: ${event.organiserId}");
       return event.organiserId == user.id;
     } else {
       return false;
     }
   }
 
+  /// Updates event in database.
   void updateEvent(Event event, File? imageFile) async {
     if (!editFormKey.currentState!.validate()) {
       return;
@@ -254,8 +276,6 @@ class EventController {
 
     String categoryId =
         await _categoryController.getCategoryIdByName(event.categoryId);
-
-    print('Updating event with category ID: ${categoryId}');
 
     FirebaseFirestore.instance.collection('events').doc(event.id).update({
       'name': event.name,

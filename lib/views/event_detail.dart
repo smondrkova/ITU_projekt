@@ -1,5 +1,13 @@
-import 'dart:io';
+/// File: /lib/views/event_detail.dart
+/// Project: Evento
+///
+/// EventDetail page view.
+///
+/// 17.12.2023
+///
+/// @author Barbora Šmondrková xsmond00
 
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -12,7 +20,6 @@ import 'package:itu/views/reviews.dart';
 import 'package:itu/views/send_invite.dart';
 
 class EventDetail extends StatefulWidget {
-  //final Function navigateToNewPage;
   Event event;
 
   EventDetail({required this.event, Key? key}) : super(key: key);
@@ -273,7 +280,6 @@ class _EventDetailState extends State<EventDetail> {
                       top: 50,
                       child: GestureDetector(
                         onTap: () async {
-                          // Navigate to the EditEventPage
                           await Navigator.push(
                             context,
                             MaterialPageRoute(

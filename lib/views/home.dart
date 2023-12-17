@@ -1,3 +1,12 @@
+/// File: /lib/views/home.dart
+/// Project: Evento
+///
+/// Home page view.
+///
+/// 17.12.2023
+///
+/// @author Barbora Šmondrková xsmond00
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -45,21 +54,6 @@ class _HomePageState extends State<HomePage> {
         //navigateToNewPage: navigateToNewPage,
         category: Category(id: '', name: ''),
       ),
-      // EventDetail(
-      //   //navigateToNewPage: navigateToNewPage
-      //   event: Event(
-      //     id: '',
-      //     name: '',
-      //     date_time: DateTime.now(),
-      //     location: '',
-      //     description: '',
-      //     categoryId: '',
-      //     organiserId: '',
-      //     price: 0.0,
-      //     ticketSellLink: '',
-      //     photoUrl: '',
-      //   ),
-      // ),
     ];
   }
 
@@ -122,10 +116,10 @@ class _HomePageState extends State<HomePage> {
         child: screens.elementAt(_selectedPage),
       ),
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(8.0), // Add some padding
+        padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-          color: Colors.deepPurple, // Set the color to purple
-          borderRadius: BorderRadius.circular(20.0), // Add rounded corners
+          color: Colors.deepPurple,
+          borderRadius: BorderRadius.circular(20.0),
         ),
         child: Theme(
           data: Theme.of(context).copyWith(
@@ -185,8 +179,8 @@ class _HomePageState extends State<HomePage> {
                 label: '',
               ),
             ],
-            showSelectedLabels: false, // <-- HERE
-            showUnselectedLabels: false, // <-- AND HERE
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
           ),
         ),
       ),

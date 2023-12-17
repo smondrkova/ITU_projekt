@@ -1,5 +1,13 @@
-import 'dart:io';
+/// File: /lib/views/edit_event.dart
+/// Project: Evento
+///
+/// Edit event page view.
+///
+/// 17.12.2023
+///
+/// @author Barbora Šmondrková xsmond00
 
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:itu/controllers/EventController.dart';
@@ -21,8 +29,6 @@ class _EditEventPageState extends State<EditEventPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('Start of event form widget build: ${widget.event.categoryId}');
-
     return Scaffold(
         body: SingleChildScrollView(
       child: Center(

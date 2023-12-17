@@ -1,3 +1,12 @@
+/// File: /lib/views/components/category_dropdown_menu.dart
+/// Project: Evento
+///
+/// Category dropdown menu component used in forms.
+///
+/// 17.12.2023
+///
+/// @author Barbora Šmondrková xsmond00
+
 import 'package:flutter/material.dart';
 import 'package:itu/controllers/CategoryController.dart';
 import 'package:itu/models/Category.dart';

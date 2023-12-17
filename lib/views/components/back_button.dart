@@ -1,3 +1,12 @@
+/// File: /lib/views/components/back_button.dart
+/// Project: Evento
+///
+/// Back button component.
+///
+/// 17.12.2023
+///
+/// @author Barbora Šmondrková xsmond00
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
