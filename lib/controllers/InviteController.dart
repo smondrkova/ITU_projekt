@@ -81,4 +81,33 @@ class InviteController {
       rethrow; // Re-throw the exception for the caller to handle
     }
   }
+
+  Future<String?> findAndDeleteInvite(String eventId, String userId) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('invites')
+          .where('event', isEqualTo: eventId)
+          .where('user', isEqualTo: userId)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        String inviteId = querySnapshot.docs.first.id;
+
+        // Delete the invite
+        await FirebaseFirestore.instance
+          .collection('invites')
+          .doc(inviteId)
+          .delete();
+
+        return inviteId;
+      } else {
+        // Invite not found
+        print('Not found');
+        return null;
+      }
+    } catch (e) {
+      print('Error finding and deleting invite: $e');
+      return null;
+    }
+  }
 }

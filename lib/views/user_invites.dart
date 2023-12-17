@@ -84,7 +84,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:itu/controllers/EventController.dart';
+import 'package:itu/controllers/InviteController.dart';
 import 'package:itu/models/Event.dart';
+import 'package:itu/models/Invite.dart';
 import 'package:itu/views/components/event_card.dart';
 
 class UserInvitesPage extends StatefulWidget {
@@ -95,11 +97,13 @@ class UserInvitesPage extends StatefulWidget {
 }
 
 class _UserInvitesPageState extends State<UserInvitesPage> {
+  final InviteController _inviteController = InviteController();
   final EventController _eventController = EventController();
+  final String currentUserId = 'OeBrMEXcqvW0kRrcF5hq';
 
   Widget buildInvitedEvents() {
     return StreamBuilder<List<Event>>(
-      stream: _eventController.getInvitedEvents(),
+      stream: _eventController.getInvitedEvents(currentUserId),
       builder: (context, snapshot) {
         print('StreamBuilder builder called');
         if (!snapshot.hasData ||
@@ -129,7 +133,12 @@ class _UserInvitesPageState extends State<UserInvitesPage> {
             children: List.generate(
               events.length,
               (index) {
-                return EventCard(event: events[index]);
+                return GestureDetector(
+                  onTap: () {
+                    _inviteController.findAndDeleteInvite(events[index].id, currentUserId);
+                  },
+                  child: EventCard(event: events[index]),
+                );
               },
             ),
           ),

@@ -171,7 +171,7 @@ class UserSearchDelegate extends SearchDelegate {
               ),
               onTap: () {
                 // navigateItem(context, displayUsers[index]);
-                _inviteController.sendInvite(displayUsers[index].id, eventId);
+                _inviteController.sendInvite(eventId, displayUsers[index].id);
               },
             );
           },
@@ -210,7 +210,7 @@ class UserSearchDelegate extends SearchDelegate {
               ),
               onTap: () {
                 // navigateItem(context, displayUsers[index]);
-                _inviteController.sendInvite(displayUsers[index].id, eventId);
+                _inviteController.sendInvite(eventId, displayUsers[index].id);
               },
             );
           },

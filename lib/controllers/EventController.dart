@@ -71,13 +71,15 @@ class EventController {
         .asyncMap((snapshot) => _getEventsFromAnotherTable(snapshot));
   }
 
-  Stream<List<Event>> getInvitedEvents() {
-    return FirebaseFirestore.instance
-        .collection('invites')
-        .where('seen', isEqualTo: false)
-        .snapshots()
-        .asyncMap((snapshot) => _getEventsFromAnotherTable(snapshot));
-  }
+Stream<List<Event>> getInvitedEvents(String userId) {
+  return FirebaseFirestore.instance
+      .collection('invites')
+      .where('user', isEqualTo: userId)
+      .where('seen', isEqualTo: false)
+      .snapshots()
+      .asyncMap((snapshot) => _getEventsFromAnotherTable(snapshot));
+}
+
 
   Future<List<Event>> _getEventsFromAnotherTable(
       QuerySnapshot snapshot) async {
