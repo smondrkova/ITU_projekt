@@ -8,8 +8,8 @@ import 'package:itu/views/components/favorite_button.dart';
 import 'package:itu/views/event_detail.dart';
 
 class EventCard extends StatelessWidget {
-  //const EventCard(Set<dynamic> set, {super.key});
   final Event event;
+
   const EventCard({required this.event});
 
   @override
