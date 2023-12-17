@@ -149,7 +149,7 @@ class _UserPageState extends State<UserPage> {
                       ),
                       GestureDetector(
                         onTap: () => //widget.navigateToNewPage('UserInvitesPage'),
-                            Navigator.push(
+                          Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => UserInvitesPage()),
@@ -174,14 +174,14 @@ class _UserPageState extends State<UserPage> {
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 21, vertical: 10),
-                                child:  Row(
+                                child: const Row(
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     // Exclude the plus icon for this GestureDetector
-                                    const SizedBox(width: 10),
-                                    const Text(
+                                    SizedBox(width: 10),
+                                    Text(
                                       'Tvoje pozvánky',
                                       style: TextStyle(
                                         fontSize: 16,

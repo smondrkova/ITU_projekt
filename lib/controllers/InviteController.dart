@@ -89,16 +89,16 @@ class InviteController {
           .where('event', isEqualTo: eventId)
           .where('user', isEqualTo: userId)
           .get();
-
+      print(querySnapshot.docs.length);
       if (querySnapshot.docs.isNotEmpty) {
         String inviteId = querySnapshot.docs.first.id;
-
+        print(inviteId);
         // Delete the invite
         await FirebaseFirestore.instance
           .collection('invites')
           .doc(inviteId)
           .delete();
-
+          print('Deleted invite');
         return inviteId;
       } else {
         // Invite not found
@@ -108,6 +108,30 @@ class InviteController {
     } catch (e) {
       print('Error finding and deleting invite: $e');
       return null;
+    }
+  }
+
+  Future<void> deleteInvitesByUserId(String userId) async {
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance
+            .collection('invites')
+            .where('userId', isEqualTo: userId)
+            .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // Use a batch to efficiently delete multiple documents
+        WriteBatch batch = FirebaseFirestore.instance.batch();
+
+        querySnapshot.docs.forEach((doc) {
+          batch.delete(doc.reference);
+        });
+
+        // Commit the batch to delete all documents
+        await batch.commit();
+      }
+    } catch (e) {
+      print('Error deleting invites by userId: $e');
     }
   }
 }
