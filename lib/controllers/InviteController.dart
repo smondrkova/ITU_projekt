@@ -1,9 +1,16 @@
+/// File: /lib/controllers/InviteController.dart
+/// Project: Evento
+///
+/// InviteController class for managing invites.
+///
+/// 17.12.2023
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../models/Invite.dart';
 import '../models/Event.dart';
 
 class InviteController {
+  /// Returns invites from a database snapshot
   List<Invite> _getInvitesFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((DocumentSnapshot doc) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
@@ -16,6 +23,7 @@ class InviteController {
     }).toList();
   }
 
+  /// Gets all invites from the database
   Stream<List<Invite>> getInvites() {
     return FirebaseFirestore.instance
         .collection('invites')
@@ -23,6 +31,7 @@ class InviteController {
         .map(_getInvitesFromSnapshot);
   }
 
+  /// Gets all invites from the database that have not been seen yets
   Stream<List<Invite>> getNotSeenInvites() {
     return FirebaseFirestore.instance
         .collection('invites')
@@ -33,6 +42,7 @@ class InviteController {
         .map(_getInvitesFromSnapshot);
   }
 
+  /// Gets all events that the user has been invited to and hasn't seen the invitation yet
   Stream<List<Event>> getAllUnseenEvents() {
     return FirebaseFirestore.instance
         .collection('invites')
@@ -62,6 +72,7 @@ class InviteController {
     });
   }
 
+  /// Creates an invitation in the database
   Future<void> sendInvite(String eventId, String userId) async {
     try {
       Invite newInvite = Invite(
@@ -82,35 +93,7 @@ class InviteController {
     }
   }
 
-  Future<String?> findAndDeleteInvite(String eventId, String userId) async {
-    try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('invites')
-          .where('event', isEqualTo: eventId)
-          .where('user', isEqualTo: userId)
-          .get();
-      print(querySnapshot.docs.length);
-      if (querySnapshot.docs.isNotEmpty) {
-        String inviteId = querySnapshot.docs.first.id;
-        print(inviteId);
-        // Delete the invite
-        await FirebaseFirestore.instance
-          .collection('invites')
-          .doc(inviteId)
-          .delete();
-          print('Deleted invite');
-        return inviteId;
-      } else {
-        // Invite not found
-        print('Not found');
-        return null;
-      }
-    } catch (e) {
-      print('Error finding and deleting invite: $e');
-      return null;
-    }
-  }
-
+  /// Deletes all invitations which have a certain user ID
   Future<void> deleteInvitesByUserId(String userId) async {
     try {
       QuerySnapshot querySnapshot =

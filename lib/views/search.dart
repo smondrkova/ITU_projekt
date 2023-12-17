@@ -1,3 +1,9 @@
+/// File: /lib/views/search.dart
+/// Project: Evento
+///
+/// Send invite page view.
+///
+/// 17.12.2023
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,13 +25,13 @@ class _SearchPageState extends State<SearchPage> {
       onTap: () {
         showSearch(
           context: context,
-          delegate: CustomSearchDelegate(),
+          delegate: EventSearchDelegate(),
         );
       },
       child: Center(
         child: Padding(
           padding: const EdgeInsets.only(
-              top: 50.0), // Adjust the top value as needed
+              top: 50.0),
           child: Container(
             height: 45,
             clipBehavior: Clip.antiAlias,
@@ -80,9 +86,11 @@ class _SearchPageState extends State<SearchPage> {
   }
 }
 
-  class CustomSearchDelegate extends SearchDelegate {
+/// A search delegate class used to search through events
+class EventSearchDelegate extends SearchDelegate {
     final EventController _eventController = EventController();
 
+    /// Returns a list of widgets that are displayed as the actions for the search bar
     @override
     List<Widget> buildActions(BuildContext context) {
       return [
@@ -96,6 +104,7 @@ class _SearchPageState extends State<SearchPage> {
       ];
     }
 
+    /// Returns a widget that is displayed as the leading icon on the left side of the search bar
     @override
     Widget buildLeading(BuildContext context) {
       return IconButton(
@@ -106,6 +115,7 @@ class _SearchPageState extends State<SearchPage> {
       );
     }
 
+    /// Returns search results based on the current query
     @override
     Widget buildResults(BuildContext context) {
       return StreamBuilder<List<Event>>(
@@ -144,6 +154,7 @@ class _SearchPageState extends State<SearchPage> {
       );
     }
 
+    /// Returns suggestions based on the current query
     @override
     Widget buildSuggestions(BuildContext context) {
       return StreamBuilder<List<Event>>(
@@ -183,7 +194,7 @@ class _SearchPageState extends State<SearchPage> {
     }
 
     void navigateItem(BuildContext context, Event selectedEvent) {
-    // Navigate to the EventDetail view
+    /// Navigate to the EventDetail view
     Navigator.push(
       context,
       MaterialPageRoute(

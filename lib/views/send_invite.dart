@@ -1,3 +1,11 @@
+/// File: /lib/views/send_invite.dart
+/// Project: Evento
+///
+/// Send invite page view.
+///
+/// 17.12.2023
+///
+/// @author Erik Žák xzaker00
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:itu/controllers/InviteController.dart';
@@ -53,7 +61,7 @@ class _SendInvitePageState extends State<SendInvitePage> {
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.only(
-                    bottom: 650.0), // Adjust the bottom value as needed
+                    bottom: 650.0),
                 child: Container(
                   height: 45,
                   clipBehavior: Clip.antiAlias,
@@ -111,6 +119,7 @@ class _SendInvitePageState extends State<SendInvitePage> {
   }
 }
 
+/// A search delegate class used to search through users
 class UserSearchDelegate extends SearchDelegate {
   final UserController _userController = UserController();
   final InviteController _inviteController = InviteController();
@@ -119,6 +128,7 @@ class UserSearchDelegate extends SearchDelegate {
 
   UserSearchDelegate({required this.context, required this.eventId});
 
+  /// Returns a list of widgets that are displayed as the actions for the search bar
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -132,6 +142,7 @@ class UserSearchDelegate extends SearchDelegate {
     ];
   }
 
+  /// Returns a widget that is displayed as the leading icon on the left side of the search bar
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
@@ -142,6 +153,7 @@ class UserSearchDelegate extends SearchDelegate {
     );
   }
 
+  /// Returns search results based on the current query
   @override
   Widget buildResults(BuildContext context) {
     return StreamBuilder<List<User>>(
@@ -180,6 +192,7 @@ class UserSearchDelegate extends SearchDelegate {
     );
   }
 
+  /// Returns suggestions based on the current query
   @override
   Widget buildSuggestions(BuildContext context) {
     return StreamBuilder<List<User>>(
@@ -225,10 +238,10 @@ class UserSearchDelegate extends SearchDelegate {
 
   Future<void> _sendInviteAndNavigateBack(BuildContext context, String event, String user) async {
     try {
-      // Replace the following line with the actual code to send an invite
+      /// Send the invite
       await _inviteController.sendInvite(event, user);
 
-      // Display a success message
+      /// Display a success message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Pozvánka bola úspešne odoslaná!'),
@@ -236,11 +249,11 @@ class UserSearchDelegate extends SearchDelegate {
         ),
       );
 
-      // Navigate back to the EventDetail screen
+      /// Navigate back to the EventDetail screen
       Navigator.pop(context);
       Navigator.pop(context);
     } catch (e) {
-      // Display an error message
+      /// Display an error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Vyskytla sa chyba pri odosielaní pozvánky. Skúste to znova.'),
