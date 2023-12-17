@@ -9,6 +9,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:itu/views/user_invites.dart';
 import 'package:itu/controllers/EventController.dart';
 import 'package:itu/controllers/UserController.dart';
 import 'package:itu/models/Event.dart';
@@ -147,6 +148,53 @@ class _UserPageState extends State<UserPage> {
                                     const SizedBox(width: 10),
                                     const Text(
                                       'Vytvoriť nové podujatie',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => //widget.navigateToNewPage('UserInvitesPage'),
+                          Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UserInvitesPage()),
+                        ),
+                        child: Container(
+                          width: 328,
+                          height: 39,
+                          margin: const EdgeInsets.only(top: 10), // Adjust the spacing as needed
+                          padding: const EdgeInsets.only(left: 35, right: 36),
+                          clipBehavior: Clip.antiAlias,
+                          decoration: ShapeDecoration(
+                            color: Colors.deepPurple,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 21, vertical: 10),
+                                child: const Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    // Exclude the plus icon for this GestureDetector
+                                    SizedBox(width: 10),
+                                    Text(
+                                      'Tvoje pozvánky',
                                       style: TextStyle(
                                         fontSize: 16,
                                       ),
