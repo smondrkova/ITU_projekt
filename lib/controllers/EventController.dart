@@ -1,3 +1,4 @@
+// lib/controllers/EventController.dart
 /// File: /lib/controllers/EventController.dart
 /// Project: Evento
 ///
@@ -6,6 +7,8 @@
 /// 17.12.2023
 ///
 /// @author Barbora Šmondrková xsmond00
+/// @author Matej Tomko, xtomko06
+///
 
 import 'dart:io';
 import 'dart:math';

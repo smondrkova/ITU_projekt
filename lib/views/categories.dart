@@ -6,6 +6,7 @@
 /// 17.12.2023
 ///
 /// @author Barbora Šmondrková xsmond00
+/// @author Matej Tomko, xtomko06
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';

@@ -1,4 +1,13 @@
 // lib/views/reviews.dart
+/// Project: Evento
+///
+/// EventDetail page view.
+///
+/// 17.12.2023
+///
+/// @author Matej Tomko, xtomko06
+///
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

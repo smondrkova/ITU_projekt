@@ -1,4 +1,13 @@
 // lib/models/Review.dart
+/// Project: Evento
+///
+/// EventDetail page view.
+///
+/// 17.12.2023
+///
+/// @author Matej Tomko, xtomko06
+///
+
 class Review {
   final String id;
   final String event; // This is the ID of the event

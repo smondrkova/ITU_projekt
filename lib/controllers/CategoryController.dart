@@ -1,4 +1,12 @@
-// CategoryController.dart
+// lib/controllers/CategoryController.dart
+/// Project: Evento
+///
+/// EventDetail page view.
+///
+/// 17.12.2023
+///
+/// @author Matej Tomko, xtomko06
+///
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../models/Category.dart';

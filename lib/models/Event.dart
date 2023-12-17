@@ -1,3 +1,13 @@
+// lib/models/Event.dart
+/// Project: Evento
+///
+/// EventDetail page view.
+///
+/// 17.12.2023
+///
+/// @author Matej Tomko, xtomko06
+///
+
 import 'dart:ffi';
 
 class Event {
