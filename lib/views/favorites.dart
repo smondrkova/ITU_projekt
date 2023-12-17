@@ -1,3 +1,12 @@
+/// File: /lib/views/favorites.dart
+/// Project: Evento
+///
+/// Favorites page view.
+///
+/// 17.12.2023
+///
+/// @author Barbora Šmondrková xsmond00
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:itu/controllers/EventController.dart';
@@ -18,29 +27,12 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return StreamBuilder<List<Event>>(
       stream: _eventController.getFavoriteEvents(),
       builder: (context, snapshot) {
-        print('StreamBuilder builder called');
         if (!snapshot.hasData ||
             snapshot.connectionState == ConnectionState.waiting) {
-          print('No data in snapshot');
           return const Text('Loading...');
         }
 
         List<Event> events = snapshot.data!;
-        print('Number of events: ${events.length}');
-
-        // return ListView.builder(
-        //   itemCount: events.length,
-        //   itemBuilder: (context, index) {
-        //     print('Building event card for event at index: $index');
-        //     return Center(
-        //       child: GestureDetector(
-        //         child: EventCard(
-        //           event: events[index],
-        //         ),
-        //       ),
-        //     );
-        //   },
-        // );
         return SingleChildScrollView(
           child: Column(
             children: List.generate(
@@ -59,7 +51,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
   Widget build(BuildContext context) {
     return Container(
       width: 365,
-      height: 640,
+      height: 800,
       clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(color: Colors.black),
       child: Stack(

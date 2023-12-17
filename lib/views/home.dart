@@ -1,3 +1,15 @@
+/// File: /lib/views/home.dart
+/// Project: Evento
+///
+/// Home page view.
+///
+/// 17.12.2023
+///
+/// @author Barbora Šmondrková xsmond00
+/// @author Matej Tomko, xtomko06
+///
+
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:itu/controllers/EventController.dart';
@@ -5,12 +17,15 @@ import 'package:itu/models/Category.dart';
 import 'package:itu/models/Event.dart';
 import 'package:itu/views/categories.dart';
 import 'package:itu/views/category_detail.dart';
+import 'package:itu/views/components/event_card_big.dart';
 import 'package:itu/views/create_event.dart';
 import 'package:itu/views/components/event_card.dart';
 import 'package:itu/views/event_detail.dart';
 import 'package:itu/views/favorites.dart';
 import 'package:itu/views/search.dart';
 import 'package:itu/views/user.dart';
+import 'package:itu/views/user_invites.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,7 +37,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   int _selectedPage = 0;
-  int _selectedCategory = 0;
 
   late List<Widget> screens;
 
@@ -30,80 +44,10 @@ class _HomePageState extends State<HomePage> {
     screens = [
       const HomeContent(),
       const SearchPage(),
-      const CategoriesPage(
-        title: 'Categories',
-      ),
+      const CategoriesPage(),
       const FavoritesPage(),
-      UserPage(
-        navigateToNewPage: navigateToNewPage,
-      ),
-      CreateEventPage(
-        navigateToNewPage: navigateToNewPage,
-      ),
-      CategoryDetail(
-        //navigateToNewPage: navigateToNewPage,
-        category: Category(id: '', name: ''),
-      ),
-      // EventDetail(
-      //   //navigateToNewPage: navigateToNewPage
-      //   event: Event(
-      //     id: '',
-      //     name: '',
-      //     date_time: DateTime.now(),
-      //     location: '',
-      //     description: '',
-      //     categoryId: '',
-      //     organiserId: '',
-      //     price: 0.0,
-      //     ticketSellLink: '',
-      //     photoUrl: '',
-      //   ),
-      // ),
+      const UserPage(),
     ];
-  }
-
-  int convertPageToIndex(String page) {
-    print(page);
-    switch (page) {
-      case 'HomePage':
-        _selectedPage = 0;
-        break;
-      case 'SearchPage':
-        _selectedPage = 1;
-        break;
-      case 'CategoriesPage':
-        _selectedPage = 2;
-        break;
-      case 'FavoritesPage':
-        _selectedPage = 3;
-        break;
-      case 'UserPage':
-        _selectedPage = 4;
-        break;
-      case 'CreateEventPage':
-        _selectedPage = 5;
-        break;
-      case 'CategoryDetailPage':
-        _selectedPage = 6;
-        break;
-      case 'EventDetailPage':
-        _selectedPage = 7;
-        break;
-      default:
-        _selectedPage = 0;
-        break;
-    }
-
-    return _selectedPage;
-  }
-
-  void navigateToNewPage(String page) {
-    int index = convertPageToIndex(page);
-    if (index >= 0 && index < screens.length) {
-      setState(() {
-        _selectedPage = index;
-      });
-    }
   }
 
   void _onItemTapped(int index) {
@@ -122,10 +66,10 @@ class _HomePageState extends State<HomePage> {
         child: screens.elementAt(_selectedPage),
       ),
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(8.0), // Add some padding
+        padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
-          color: Colors.deepPurple, // Set the color to purple
-          borderRadius: BorderRadius.circular(20.0), // Add rounded corners
+          color: Colors.deepPurple,
+          borderRadius: BorderRadius.circular(20.0),
         ),
         child: Theme(
           data: Theme.of(context).copyWith(
@@ -171,8 +115,8 @@ class _HomePageState extends State<HomePage> {
                     _selectedIndex == 3
                         ? 'assets/icons/favorites_bold_icon.svg'
                         : 'assets/icons/favorites_icon.svg',
-                    width: 30.0,
-                    height: 30.0),
+                    width: 35.0,
+                    height: 35.0),
                 label: '',
               ),
               BottomNavigationBarItem(
@@ -180,13 +124,13 @@ class _HomePageState extends State<HomePage> {
                     _selectedIndex == 4
                         ? 'assets/icons/user_bold_icon.svg'
                         : 'assets/icons/user_icon.svg',
-                    width: 30.0,
-                    height: 30.0),
+                    width: 32.0,
+                    height: 32.0),
                 label: '',
               ),
             ],
-            showSelectedLabels: false, // <-- HERE
-            showUnselectedLabels: false, // <-- AND HERE
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
           ),
         ),
       ),
@@ -203,6 +147,7 @@ class HomeContent extends StatefulWidget {
 
 class _HomeContentState extends State<HomeContent> {
   final EventController _eventController = EventController();
+  final _currentIndexNotifier = ValueNotifier<int>(0);
 
   Widget buildEventsListView() {
     return StreamBuilder<List<Event>>(
@@ -218,19 +163,11 @@ class _HomeContentState extends State<HomeContent> {
           itemCount: events.length,
           itemBuilder: (context, index) {
             return Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // sem pojdu event cards
                 GestureDetector(
-                  // onTap: () => Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) =>
-                  //         EventDetail(event: events[index]),
-                  //   ),
-                  // ),
                   child: EventCard(
                     event: events[index],
                   ),
@@ -249,6 +186,7 @@ class _HomeContentState extends State<HomeContent> {
       padding: const EdgeInsets.fromLTRB(25.0, 50.0, 25.0, 25.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: [
           const SizedBox(
             width: 153,
@@ -257,115 +195,30 @@ class _HomeContentState extends State<HomeContent> {
               'Čo je nové',
             ),
           ),
-          Container(
-            width: 340,
-            height: 186,
-            padding: const EdgeInsets.only(
-              top: 116,
-              left: 30,
-              right: 80,
-              bottom: 14,
-            ),
-            clipBehavior: Clip.antiAlias,
-            decoration: ShapeDecoration(
-              image: const DecorationImage(
-                image: AssetImage('assets/placeholder.png'),
-                fit: BoxFit.cover,
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24.0),
-              ),
-              shadows: const [
-                BoxShadow(
-                  color: Color(0x3F000000),
-                  blurRadius: 4,
-                  offset: Offset(0, 4),
-                  spreadRadius: 0,
-                )
-              ],
-            ),
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 230,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 152,
-                        child: Text(
-                          'Najlepšia párty',
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 234,
-                        child: Text(
-                          '6.12.2023',
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 234,
-                        child: Text(
-                          'Fléda',
-                          style: TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+          Column(
+            children: [
+              CarouselSlider.builder(
+                itemCount: 3,
+                itemBuilder:
+                    (BuildContext context, int index, int pageViewIndex) {
+                  return const EventCardBig();
+                },
+                options: CarouselOptions(
+                  autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 7),
+                  enlargeCenterPage: true,
+                  viewportFraction: 1.0,
+                  aspectRatio: 2.0,
+                  onPageChanged: (index, reason) {
+                    _currentIndexNotifier.value = index;
+                  },
                 ),
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: SizedBox(
-              width: 50,
-              height: 10,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 10,
-                    height: 10,
-                    decoration: const ShapeDecoration(
-                      color: Color(0xFFEFF0F4),
-                      shape: OvalBorder(),
-                    ),
-                  ),
-                  Container(
-                    width: 10,
-                    height: 10,
-                    decoration: const ShapeDecoration(
-                      color: Color(0x7FEFF0F4),
-                      shape: OvalBorder(),
-                    ),
-                  ),
-                  Container(
-                    width: 10,
-                    height: 10,
-                    decoration: const ShapeDecoration(
-                      color: Color(0x7FEFF0F4),
-                      shape: OvalBorder(),
-                    ),
-                  ),
-                ],
               ),
-            ),
+            ],
+          ),
+          CarouselIndicator(
+            itemCount: 3,
+            currentIndexNotifier: _currentIndexNotifier,
           ),
           const SizedBox(
             height: 10,
@@ -380,12 +233,46 @@ class _HomeContentState extends State<HomeContent> {
               ),
             ),
           ),
-          Container(
+          SizedBox(
             height: 500,
             child: buildEventsListView(),
           ),
         ],
       ),
+    );
+  }
+}
+
+class CarouselIndicator extends StatelessWidget {
+  final int itemCount;
+  final ValueNotifier<int> currentIndexNotifier;
+
+  const CarouselIndicator(
+      {super.key, required this.itemCount, required this.currentIndexNotifier});
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<int>(
+      valueListenable: currentIndexNotifier,
+      builder: (context, value, child) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(3, (index) {
+            return Container(
+              width: 8.0,
+              height: 8.0,
+              margin:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: value == index
+                    ? const Color.fromRGBO(255, 254, 254, 0.894)
+                    : const Color.fromRGBO(202, 202, 202, 0.4),
+              ),
+            );
+          }),
+        );
+      },
     );
   }
 }

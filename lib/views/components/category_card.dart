@@ -1,3 +1,12 @@
+/// File: /lib/views/components/category_card.dart
+/// Project: Evento
+///
+/// Category card component used on discover/categories page.
+///
+/// 17.12.2023
+///
+/// @author Barbora Šmondrková xsmond00
+
 import 'package:flutter/material.dart';
 import 'package:itu/models/Category.dart';
 

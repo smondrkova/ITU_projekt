@@ -1,14 +1,21 @@
-// Categories.dart
+/// File: /lib/views/categories.dart
+/// Project: Evento
+///
+/// Categories page view.
+///
+/// 17.12.2023
+///
+/// @author Barbora Šmondrková xsmond00
+/// @author Matej Tomko, xtomko06
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:itu/models/Category.dart';
 import 'package:itu/views/category_detail.dart';
-import '../controllers/CategoryController.dart'; // Adjust the import based on your actual file structure
+import '../controllers/CategoryController.dart';
 
 class CategoriesPage extends StatefulWidget {
-  final String title;
-
-  const CategoriesPage({Key? key, required this.title}) : super(key: key);
+  const CategoriesPage({Key? key}) : super(key: key);
 
   @override
   State<CategoriesPage> createState() => _CategoriesPageState();
@@ -46,8 +53,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   child: Container(
                     width: 345,
                     height: 132,
-                    decoration: BoxDecoration(
-                      boxShadow: const [
+                    decoration: const BoxDecoration(
+                      boxShadow: [
                         BoxShadow(
                           color: Color(0x3F000000),
                           blurRadius: 4,

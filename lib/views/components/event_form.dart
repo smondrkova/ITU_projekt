@@ -1,7 +1,7 @@
-/// File: /lib/views/create_event.dart
+/// File: /lib/views/components/event_form.dart
 /// Project: Evento
 ///
-/// Create event page view.
+/// Event form for editing event.
 ///
 /// 17.12.2023
 ///
@@ -9,34 +9,28 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:itu/controllers/CategoryController.dart';
-import 'package:itu/controllers/EventController.dart';
-import 'package:itu/controllers/UserController.dart';
-import 'package:itu/models/Category.dart';
-import 'package:itu/models/Event.dart';
 import 'package:intl/intl.dart';
-import 'package:itu/models/User.dart';
-import 'package:itu/views/home.dart';
+import 'package:itu/controllers/EventController.dart';
+import 'package:itu/models/Event.dart';
+import 'package:itu/views/components/category_dropdown_menu.dart';
 
-class CreateEventPage extends StatefulWidget {
-  const CreateEventPage({Key? key}) : super(key: key);
+class EventForm extends StatefulWidget {
+  final Event event;
+  const EventForm({super.key, required this.event});
 
   @override
-  State<CreateEventPage> createState() => _CreateEventPageState();
+  State<EventForm> createState() => _EventFormState();
 }
 
-class _CreateEventPageState extends State<CreateEventPage> {
-  final CategoryController _categoryController = CategoryController();
+class _EventFormState extends State<EventForm> {
   final EventController _eventController = EventController();
-  final UserController _userController = UserController();
 
-  final _dateController = TextEditingController(
+  var _dateController = TextEditingController(
     text: DateFormat('dd.MM.yyyy').format(DateTime.now()),
   );
 
-  final _timeController = TextEditingController(
+  var _timeController = TextEditingController(
     text: DateFormat('HH:mm').format(DateTime.now()),
   );
 
@@ -48,22 +42,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
   final TextEditingController ticketSellLinkController =
       TextEditingController();
   final TextEditingController ticketPriceController = TextEditingController();
-
-  Event event = Event(
-    id: '',
-    name: '',
-    date_time: DateTime.now(),
-    place_address: '',
-    place_name: '',
-    categoryId: '',
-    organiserId: '',
-    description: '',
-    price: 0.0,
-    ticketSellLink: '',
-    photoUrl: '',
-  );
-
-  int _currentViewIndex = 0;
 
   File? _image;
   final picker = ImagePicker();
@@ -80,163 +58,64 @@ class _CreateEventPageState extends State<CreateEventPage> {
     });
   }
 
-  Widget _buildInsertImage() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const SizedBox(
-          width: 212,
-          height: 30,
-          child: Text(
-            'Vyber titulný obrázok',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 18,
-            ),
-          ),
-        ),
-        const SizedBox(height: 12),
-        SizedBox(
-          width: 275,
-          height: 275,
-          child: Stack(
-            children: [
-              Positioned(
-                left: 0,
-                top: 0,
-                child: GestureDetector(
-                  onTap: getImage,
-                  child: Container(
-                    width: 275,
-                    height: 275,
-                    decoration: ShapeDecoration(
-                      image: _image == null
-                          ? const DecorationImage(
-                              image:
-                                  AssetImage('assets/picture_placeholder.png'),
-                              fit: BoxFit.fill,
-                            )
-                          : DecorationImage(
-                              image: FileImage(_image!),
-                              fit: BoxFit.fill,
-                            ),
-                      color: const Color(0xFF3B3B3B),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
+  @override
+  void initState() {
+    super.initState();
+    _dateController = TextEditingController(
+      text: DateFormat('dd.MM.yyyy').format(widget.event.date_time),
+    );
+    _timeController = TextEditingController(
+      text: DateFormat('HH:mm').format(widget.event.date_time),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print('Widget in EVENTFORM event category id: ${widget.event.categoryId}');
+
+    return Form(
+      key: _eventController.editFormKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 275,
+            height: 275,
+            child: Stack(
+              children: [
+                Positioned(
+                  left: 0,
+                  top: 0,
+                  child: GestureDetector(
+                    onTap: getImage,
+                    child: Container(
+                      width: 275,
+                      height: 275,
+                      decoration: ShapeDecoration(
+                        image: _image == null
+                            ? DecorationImage(
+                                image: (widget.event.photoUrl != '')
+                                    ? AssetImage(widget.event.photoUrl)
+                                    : const AssetImage(
+                                        'assets/placeholder.png',
+                                      ) as ImageProvider<Object>,
+                                fit: BoxFit.fill,
+                              )
+                            : DecorationImage(
+                                image: FileImage(_image!),
+                                fit: BoxFit.fill,
+                              ),
+                        color: const Color(0xFF3B3B3B),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 12),
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              _currentViewIndex += 1;
-            });
-          },
-          child: Container(
-            width: 144,
-            height: 46,
-            padding: const EdgeInsets.all(10),
-            decoration: ShapeDecoration(
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(24),
-              ),
-              shadows: const [
-                BoxShadow(
-                  color: Color(0x3F000000),
-                  blurRadius: 4,
-                  offset: Offset(0, 4),
-                  spreadRadius: 0,
-                )
               ],
-            ),
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Ďalej',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget buildCategoryDropdown() {
-    return StreamBuilder<List<Category>>(
-      stream: _categoryController.getCategories(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return const Text('Error loading categories');
-        } else {
-          List<Category> categories = snapshot.data!;
-
-          return Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-            child: DropdownButtonFormField<String>(
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Vyber kategóriu podujatia',
-                hintStyle: TextStyle(
-                  color: Color.fromARGB(110, 255, 255, 255),
-                ),
-              ),
-              items: categories.map((Category category) {
-                print(category.name);
-                return DropdownMenuItem<String>(
-                  value: category.name,
-                  child: Text(category.name,
-                      style: const TextStyle(color: Colors.white)),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                event.categoryId = newValue!;
-              },
-              onSaved: (String? value) {
-                event.categoryId = value!;
-              },
-            ),
-          );
-        }
-      },
-    );
-  }
-
-  Widget _buildMainInfo() {
-    return SizedBox(
-      width: 328,
-      height: 650,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(
-            width: 270,
-            child: Text(
-              'Vyplň informácie o podujatí',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18,
-              ),
             ),
           ),
           const SizedBox(height: 12),
@@ -277,16 +156,17 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           color: Colors.white,
                           fontSize: 16,
                         ),
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Vyplň názov podujatia',
-                          hintStyle: TextStyle(
+                          hintText: widget.event.name,
+                          hintStyle: const TextStyle(
                             color: Color.fromARGB(110, 255, 255, 255),
                           ),
                         ),
                         onSaved: (value) {
-                          print(value);
-                          event.name = value!;
+                          if (value != null && value.isNotEmpty) {
+                            widget.event.name = value;
+                          }
                         },
                       ),
                     ),
@@ -341,7 +221,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                               FocusScope.of(context).requestFocus(FocusNode());
                               DateTime? pickedDate = await showDatePicker(
                                 context: context,
-                                initialDate: DateTime.now(),
+                                initialDate: widget.event.date_time,
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2100),
                               );
@@ -349,7 +229,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                 String formattedDate =
                                     DateFormat('dd.MM.yyyy').format(pickedDate);
                                 _dateController.text = formattedDate;
-                                event.date_time = pickedDate;
+                                widget.event.date_time = pickedDate;
                               }
                             },
                           ),
@@ -399,11 +279,12 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           onTap: () async {
                             final TimeOfDay? pickedTime = await showTimePicker(
                               context: context,
-                              initialTime: TimeOfDay.now(),
+                              initialTime: TimeOfDay.fromDateTime(
+                                  widget.event.date_time),
                             );
 
                             if (pickedTime != null) {
-                              final DateTime now = DateTime.now();
+                              final DateTime now = widget.event.date_time;
                               final DateTime pickedDateTime = DateTime(
                                   now.year,
                                   now.month,
@@ -460,15 +341,17 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           color: Colors.white,
                           fontSize: 16,
                         ),
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Vyplň miesto konania',
-                          hintStyle: TextStyle(
+                          hintText: widget.event.place_name,
+                          hintStyle: const TextStyle(
                             color: Color.fromARGB(110, 255, 255, 255),
                           ),
                         ),
                         onSaved: (value) {
-                          event.place_name = value!;
+                          if (value != null && value.isNotEmpty) {
+                            widget.event.place_name = value;
+                          }
                         },
                       ),
                     ),
@@ -515,15 +398,17 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           color: Colors.white,
                           fontSize: 16,
                         ),
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Vyplň adresu miesta',
-                          hintStyle: TextStyle(
+                          hintText: widget.event.place_address,
+                          hintStyle: const TextStyle(
                             color: Color.fromARGB(110, 255, 255, 255),
                           ),
                         ),
                         onSaved: (value) {
-                          event.place_address = value!;
+                          if (value != null && value.isNotEmpty) {
+                            widget.event.place_address = value;
+                          }
                         },
                       ),
                     ),
@@ -565,7 +450,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         borderRadius: BorderRadius.circular(24),
                       ),
                     ),
-                    child: buildCategoryDropdown(),
+                    child: CategoryDropdownMenu(event: widget.event),
                   ),
                 ),
               ],
@@ -613,17 +498,17 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           color: Colors.white,
                           fontSize: 16,
                         ),
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Vyplň popis',
-                          hintStyle: TextStyle(
+                          hintText: widget.event.description,
+                          hintStyle: const TextStyle(
                             color: Color.fromARGB(110, 255, 255, 255),
                           ),
                         ),
                         maxLines: null,
                         keyboardType: TextInputType.multiline,
                         onSaved: (value) {
-                          event.description = value!;
+                          widget.event.description = value!;
                         },
                       ),
                     ),
@@ -632,76 +517,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
               ],
             ),
           ),
-          const SizedBox(height: 12),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                _currentViewIndex += 1;
-                event.name = nameController.text;
-                event.place_name = locationNameController.text;
-                event.place_address = locationAddressController.text;
-                event.description = descriptionController.text;
-              });
-            },
-            child: Container(
-              width: 144,
-              height: 46,
-              padding: const EdgeInsets.all(10),
-              decoration: ShapeDecoration(
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-                shadows: const [
-                  BoxShadow(
-                    color: Color(0x3F000000),
-                    blurRadius: 4,
-                    offset: Offset(0, 4),
-                    spreadRadius: 0,
-                  )
-                ],
-              ),
-              child: const Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Ďalej',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildOptionalInfo() {
-    return SizedBox(
-      width: 334,
-      height: 350,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(
-            width: 334,
-            height: 36,
-            child: Text(
-              'Vyplň informácie o lístkoch (voliteľné)',
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
           SizedBox(
             width: 328,
             height: 60,
@@ -737,15 +552,15 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         keyboardType: TextInputType.number,
                         style:
                             const TextStyle(color: Colors.white, fontSize: 16),
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Vyplň vstupné',
-                          hintStyle: TextStyle(
+                          hintText: widget.event.price.toString(),
+                          hintStyle: const TextStyle(
                               color: Color.fromARGB(110, 255, 255, 255)),
                         ),
                         onSaved: (value) {
                           if (value != null && value.isNotEmpty) {
-                            event.price = double.parse(value);
+                            widget.event.price = double.parse(value);
                           }
                         },
                       ),
@@ -793,17 +608,17 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           color: Colors.white,
                           fontSize: 16,
                         ),
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: 'Vyplň odkaz',
-                          hintStyle: TextStyle(
+                          hintText: widget.event.ticketSellLink,
+                          hintStyle: const TextStyle(
                             color: Color.fromARGB(110, 255, 255, 255),
                           ),
                         ),
                         maxLines: null,
                         keyboardType: TextInputType.multiline,
                         onSaved: (value) {
-                          event.ticketSellLink = value!;
+                          widget.event.ticketSellLink = value!;
                         },
                       ),
                     ),
@@ -815,7 +630,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
           const SizedBox(height: 12),
           GestureDetector(
             onTap: () {
-              _eventController.createEvent(event, _image);
+              _eventController.updateEvent(widget.event, null);
               Navigator.pop(context);
             },
             child: Container(
@@ -842,10 +657,11 @@ class _CreateEventPageState extends State<CreateEventPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Odoslať',
+                    'Uložiť zmeny',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 18,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
@@ -854,188 +670,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildView(int viewIndex) {
-    switch (viewIndex) {
-      case 0:
-        return Positioned(
-          left: 42,
-          top: 150,
-          child: _buildInsertImage(),
-        );
-      case 1:
-        return Positioned(
-          left: 15,
-          top: 120,
-          child: _buildMainInfo(),
-        );
-
-      case 2:
-        return Positioned(
-          left: 15,
-          top: 120,
-          child: _buildOptionalInfo(),
-        );
-
-      default:
-        return Container();
-    }
-  }
-
-  Widget _buildIcon(String iconPath) {
-    return Container(
-      width: 25,
-      height: 25,
-      clipBehavior: Clip.antiAlias,
-      decoration: const BoxDecoration(),
-      child: Stack(
-        children: [
-          Positioned(
-            left: 2.08,
-            top: 2.08,
-            child: SizedBox(
-              width: 20.83,
-              height: 20.83,
-              child: SvgPicture.asset(
-                iconPath,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void fetchCurrentUser() async {
-    User? user = await _userController.fetchAndAssignUser();
-    if (user != null) {
-      event.organiserId = user.id;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    fetchCurrentUser();
-
-    return Scaffold(
-      body: Align(
-          alignment: Alignment.center,
-          child: Container(
-            width: 360,
-            height: 800,
-            clipBehavior: Clip.antiAlias,
-            decoration: const BoxDecoration(color: Colors.black),
-            child: Stack(
-              children: [
-                const Positioned(
-                  left: 40,
-                  top: 50,
-                  child: SizedBox(
-                    width: 267,
-                    child: Text(
-                      'Vytvor nové podujatie',
-                      style: TextStyle(
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-                ),
-                Form(
-                  key: _eventController.createFormKey,
-                  child: _buildView(_currentViewIndex),
-                ),
-                Positioned(
-                  left: 8,
-                  top: 52,
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        if (_currentViewIndex == 0) {
-                          Navigator.pop(context);
-                        }
-                        _currentViewIndex -= 1;
-                      });
-                    },
-                    child: _buildIcon('assets/icons/left_arrow_icon.svg'),
-                  ),
-                ),
-                Positioned(
-                    left: 319,
-                    top: 43,
-                    child: IconButton(
-                      icon: SvgPicture.asset('assets/icons/info_icon.svg',
-                          width: 25.0, height: 25.0),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Align(
-                              alignment: Alignment.topRight,
-                              child: Dialog(
-                                backgroundColor: Colors.transparent,
-                                insetPadding: const EdgeInsets.all(10),
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      width: 285,
-                                      height: 174,
-                                      decoration: ShapeDecoration(
-                                        color: const Color(0xFF242424),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(24),
-                                        ),
-                                        shadows: const [
-                                          BoxShadow(
-                                            color: Color(0x3F000000),
-                                            blurRadius: 4,
-                                            offset: Offset(0, 4),
-                                            spreadRadius: 0,
-                                          )
-                                        ],
-                                      ),
-                                      child: Stack(
-                                        children: [
-                                          const Positioned(
-                                            left: 16,
-                                            top: 47,
-                                            child: SizedBox(
-                                              width: 254,
-                                              height: 117,
-                                              child: Text(
-                                                'Vytváranie podujatí prebieha formou požiadavok. Po odoslaní požiadavky vás budeme informovať o jej stave prostredníctvom e-mailu.',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 18,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w500,
-                                                  height: 0,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Positioned(
-                                            left: 251,
-                                            top: 16,
-                                            child: _buildIcon(
-                                                'assets/icons/info_icon.svg'),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    )),
-              ],
-            ),
-          )),
     );
   }
 }

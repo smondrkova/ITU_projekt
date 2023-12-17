@@ -1,9 +1,19 @@
-// UserController.dart
+/// File: /lib/controllers/UserController.dart
+/// Project: Evento
+///
+/// UserController class for managing user.
+///
+/// 17.12.2023
+///
+/// @author Erik Žák, xzaker00
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../models/User.dart'; // Make sure to replace 'User' with the actual class representing a user in your app
+import '../models/User.dart';
 
 class UserController {
+  User? currentUser;
+
   Stream<List<User>> getUsers() {
     return FirebaseFirestore.instance
         .collection('users')
@@ -43,17 +53,17 @@ class UserController {
           password: data['password'],
         );
       } else {
-        return null; // User with the specified ID not found
+        return null;
       }
     } catch (e) {
-      // Handle any errors that might occur during the fetch
-      print("Error fetching user by ID: $e");
       return null;
     }
   }
 
   Future<User?> fetchAndAssignUser() async {
     User? user = await getUserById("OeBrMEXcqvW0kRrcF5hq");
+    currentUser = user;
+
     return user;
   }
 }

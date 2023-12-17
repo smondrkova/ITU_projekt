@@ -1,3 +1,12 @@
+/// File: /lib/views/category_detail.dart
+/// Project: Evento
+///
+/// Category detail page view.
+///
+/// 17.12.2023
+///
+/// @author Barbora Šmondrková xsmond00
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -9,7 +18,6 @@ import 'package:itu/views/components/event_card_small.dart';
 
 class CategoryDetail extends StatefulWidget {
   final Category category;
-  //final Function navigateToNewPage;
 
   const CategoryDetail({required this.category, Key? key}) : super(key: key);
 
@@ -38,7 +46,7 @@ class _CategoryDetailState extends State<CategoryDetail> {
           return ListView.builder(
             itemCount: events.length,
             itemBuilder: (context, index) {
-              //return EventCardSmall(event: events[index]);
+              ;
               return EventCardSmall(event: events[index]);
             },
           );
@@ -52,7 +60,6 @@ class _CategoryDetailState extends State<CategoryDetail> {
     return Scaffold(
       body: Container(
         width: 400,
-        // child: buildEventList(),
         clipBehavior: Clip.antiAlias,
         decoration: const BoxDecoration(color: Colors.black),
         child: Stack(
@@ -92,8 +99,6 @@ class _CategoryDetailState extends State<CategoryDetail> {
                       left: 19,
                       top: 140,
                       child: SizedBox(
-                        //width: 227,
-                        //height: 99,
                         child: Text(
                           widget.category.name,
                           style: const TextStyle(

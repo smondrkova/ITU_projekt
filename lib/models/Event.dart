@@ -1,3 +1,13 @@
+// lib/models/Event.dart
+/// Project: Evento
+///
+/// EventDetail page view.
+///
+/// 17.12.2023
+///
+/// @author Matej Tomko, xtomko06
+///
+
 import 'dart:ffi';
 
 class Event {
@@ -11,7 +21,7 @@ class Event {
   String description;
   double price;
   String ticketSellLink;
-  String? photoUrl;
+  String photoUrl;
 
   Event({
     required this.id,
@@ -24,7 +34,7 @@ class Event {
     required this.description,
     required this.price,
     required this.ticketSellLink,
-    this.photoUrl,
+    required this.photoUrl,
   });
 
   Map<String, dynamic> toMap() {
