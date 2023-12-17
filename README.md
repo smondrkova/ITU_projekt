@@ -64,13 +64,20 @@ flutter devices
 You should see your emulator listed.
 ```
 
-### 7. Run the Flutter App:
+### 7. Install Project Dependencies:
 
 Navigate to your Flutter project directory using the terminal or command prompt:
 
 ```bash
 cd path/to/your/flutter/project
 ```
+
+```bash
+flutter pub get
+```
+This will install all required dependencies for the project to run smoothly.
+
+### 8. Run the Flutter App:
 
 ```bash
 flutter run
