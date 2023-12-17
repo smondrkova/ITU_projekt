@@ -15,9 +15,7 @@ import 'package:itu/views/category_detail.dart';
 import '../controllers/CategoryController.dart';
 
 class CategoriesPage extends StatefulWidget {
-  final String title;
-
-  const CategoriesPage({Key? key, required this.title}) : super(key: key);
+  const CategoriesPage({Key? key}) : super(key: key);
 
   @override
   State<CategoriesPage> createState() => _CategoriesPageState();

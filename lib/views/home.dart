@@ -24,6 +24,7 @@ import 'package:itu/views/event_detail.dart';
 import 'package:itu/views/favorites.dart';
 import 'package:itu/views/search.dart';
 import 'package:itu/views/user.dart';
+import 'package:itu/views/user_invites.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,7 +37,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   int _selectedPage = 0;
-  int _selectedCategory = 0;
 
   late List<Widget> screens;
 
@@ -44,62 +44,10 @@ class _HomePageState extends State<HomePage> {
     screens = [
       const HomeContent(),
       const SearchPage(),
-      const CategoriesPage(
-        title: 'Categories',
-      ),
+      const CategoriesPage(),
       const FavoritesPage(),
-      UserPage(
-        navigateToNewPage: navigateToNewPage,
-      ),
-      const CreateEventPage(),
-      CategoryDetail(
-        //navigateToNewPage: navigateToNewPage,
-        category: Category(id: '', name: ''),
-      ),
+      const UserPage(),
     ];
-  }
-
-  int convertPageToIndex(String page) {
-    switch (page) {
-      case 'HomePage':
-        _selectedPage = 0;
-        break;
-      case 'SearchPage':
-        _selectedPage = 1;
-        break;
-      case 'CategoriesPage':
-        _selectedPage = 2;
-        break;
-      case 'FavoritesPage':
-        _selectedPage = 3;
-        break;
-      case 'UserPage':
-        _selectedPage = 4;
-        break;
-      case 'CreateEventPage':
-        _selectedPage = 5;
-        break;
-      case 'CategoryDetailPage':
-        _selectedPage = 6;
-        break;
-      case 'EventDetailPage':
-        _selectedPage = 7;
-        break;
-      default:
-        _selectedPage = 0;
-        break;
-    }
-
-    return _selectedPage;
-  }
-
-  void navigateToNewPage(String page) {
-    int index = convertPageToIndex(page);
-    if (index >= 0 && index < screens.length) {
-      setState(() {
-        _selectedPage = index;
-      });
-    }
   }
 
   void _onItemTapped(int index) {
