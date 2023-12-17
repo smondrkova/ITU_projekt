@@ -52,7 +52,7 @@ class _SearchPageState extends State<SearchPage> {
                     width: 260,
                     height: 22,
                     child: Text(
-                      'Hľadaj...',
+                      'Hľadaj podujatia...',
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.5),
                         fontSize: 15,
@@ -80,116 +80,115 @@ class _SearchPageState extends State<SearchPage> {
   }
 }
 
-class CustomSearchDelegate extends SearchDelegate {
-  final EventController eventController = EventController();
+  class CustomSearchDelegate extends SearchDelegate {
+    final EventController _eventController = EventController();
 
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: const Icon(Icons.clear),
+    @override
+    List<Widget> buildActions(BuildContext context) {
+      return [
+        IconButton(
+          icon: const Icon(Icons.clear),
+          onPressed: () {
+            query = '';
+            showSuggestions(context);
+          },
+        ),
+      ];
+    }
+
+    @override
+    Widget buildLeading(BuildContext context) {
+      return IconButton(
+        icon: const Icon(Icons.arrow_back),
         onPressed: () {
-          query = '';
-          showSuggestions(context);
+          close(context, null);
         },
-      ),
-    ];
-  }
+      );
+    }
 
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.arrow_back),
-      onPressed: () {
-        close(context, null);
-      },
-    );
-  }
+    @override
+    Widget buildResults(BuildContext context) {
+      return StreamBuilder<List<Event>>(
+        stream: _eventController.getEvents(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-  @override
-  Widget buildResults(BuildContext context) {
-    return StreamBuilder<List<Event>>(
-      stream: eventController.getEvents(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        }
+          List<Event> events = snapshot.data ?? [];
 
-        List<Event> events = snapshot.data ?? [];
+          List<Event> displayEvents = query.isEmpty
+              ? events
+              : events
+                  .where((event) =>
+                      event.name.toLowerCase().contains(query.toLowerCase()))
+                  .toList();
 
-        List<Event> displayEvents = query.isEmpty
-            ? events
-            : events
-                .where((event) =>
-                    event.name.toLowerCase().contains(query.toLowerCase()))
-                .toList();
+          return ListView.builder(
+            itemCount: displayEvents.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(
+                  displayEvents[index].name,
+                  style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                onTap: () {
+                  navigateItem(context, displayEvents[index]);
+                },
+              );
+            },
+          );
+        },
+      );
+    }
 
-        return ListView.builder(
-          itemCount: displayEvents.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(
-                displayEvents[index].name,
-                style: TextStyle(
-                    color: Colors.white,
+    @override
+    Widget buildSuggestions(BuildContext context) {
+      return StreamBuilder<List<Event>>(
+        stream: _eventController.getEvents(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          List<Event> events = snapshot.data ?? [];
+
+          List<Event> displayEvents = query.isEmpty
+              ? events
+              : events
+                  .where((event) =>
+                      event.name.toLowerCase().contains(query.toLowerCase()))
+                  .toList();
+
+          return ListView.builder(
+            itemCount: displayEvents.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(
+                  displayEvents[index].name,
+                  style: TextStyle(
+                      color: Colors.white,
                   ),
                 ),
-              onTap: () {
-                navigateItem(context, displayEvents[index]);
-              },
-            );
-          },
-        );
-      },
+                onTap: () {
+                  navigateItem(context, displayEvents[index]);
+                },
+              );
+            },
+          );
+        },
+      );
+    }
+
+    void navigateItem(BuildContext context, Event selectedEvent) {
+    // Navigate to the EventDetail view
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EventDetail(event: selectedEvent),
+      ),
     );
   }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    return StreamBuilder<List<Event>>(
-      stream: eventController.getEvents(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        }
-
-        List<Event> events = snapshot.data ?? [];
-
-        List<Event> displayEvents = query.isEmpty
-            ? events
-            : events
-                .where((event) =>
-                    event.name.toLowerCase().contains(query.toLowerCase()))
-                .toList();
-
-        return ListView.builder(
-          itemCount: displayEvents.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: Text(
-                displayEvents[index].name,
-                style: TextStyle(
-                    color: Colors.white,
-                ),
-              ),
-              onTap: () {
-                navigateItem(context, displayEvents[index]);
-              },
-            );
-          },
-        );
-      },
-    );
-  }
-
-  void navigateItem(BuildContext context, Event selectedEvent) {
-  // Navigate to the EventDetail view
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => EventDetail(event: selectedEvent),
-    ),
-  );
-}
-
 }

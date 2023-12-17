@@ -46,13 +46,17 @@ class InviteController {
         return Event(
           id: doc.id,
           name: data['name'] ?? '',
+          date_time: data['date_time'] != null
+              ? (data['date_time'] as Timestamp).toDate() // Use toDate() directly
+              : DateTime.now(), // Provide a default date or handle differently
+          place_address: data['place_address'] ?? '',
+          place_name: data['place_name'] ?? '',
+          categoryId: data['categoryId'] ?? '',
+          organiserId: data['organiserId'] ?? '',
           description: data['description'] ?? '',
-          date_time: data['date_time'] ?? '',
-          location: data['location'] ?? '',
-          photoUrl: data['photoUrl'],
-          categoryId: data['category'] ?? '',
-          price: data['price'] ?? '',
+          price: (data['price'] ?? 0).toDouble(), // Ensure the type is double
           ticketSellLink: data['ticketSellLink'] ?? '',
+          photoUrl: data['photoUrl'] ?? '',
         );
       }).toList();
     });

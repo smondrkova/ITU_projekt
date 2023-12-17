@@ -68,10 +68,18 @@ class EventController {
     return FirebaseFirestore.instance
         .collection('favourites')
         .snapshots()
-        .asyncMap((snapshot) => _getFavoriteEventsFromSnapshot(snapshot));
+        .asyncMap((snapshot) => _getEventsFromAnotherTable(snapshot));
   }
 
-  Future<List<Event>> _getFavoriteEventsFromSnapshot(
+  Stream<List<Event>> getInvitedEvents() {
+    return FirebaseFirestore.instance
+        .collection('invites')
+        .where('seen', isEqualTo: false)
+        .snapshots()
+        .asyncMap((snapshot) => _getEventsFromAnotherTable(snapshot));
+  }
+
+  Future<List<Event>> _getEventsFromAnotherTable(
       QuerySnapshot snapshot) async {
     return Future.wait(snapshot.docs.map((doc) async {
       String eventId = (doc.data() as Map<String, dynamic>)['event'];

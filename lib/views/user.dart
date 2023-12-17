@@ -147,6 +147,53 @@ class _UserPageState extends State<UserPage> {
                           ),
                         ),
                       ),
+                      GestureDetector(
+                        onTap: () => //widget.navigateToNewPage('UserInvitesPage'),
+                            Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UserInvitesPage()),
+                        ),
+                        child: Container(
+                          width: 328,
+                          height: 39,
+                          margin: const EdgeInsets.only(top: 10), // Adjust the spacing as needed
+                          padding: const EdgeInsets.only(left: 35, right: 36),
+                          clipBehavior: Clip.antiAlias,
+                          decoration: ShapeDecoration(
+                            color: Colors.deepPurple,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 21, vertical: 10),
+                                child:  Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    // Exclude the plus icon for this GestureDetector
+                                    const SizedBox(width: 10),
+                                    const Text(
+                                      'Tvoje pozvánky',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

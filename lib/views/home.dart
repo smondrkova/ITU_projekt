@@ -11,6 +11,7 @@ import 'package:itu/views/event_detail.dart';
 import 'package:itu/views/favorites.dart';
 import 'package:itu/views/search.dart';
 import 'package:itu/views/user.dart';
+import 'package:itu/views/user_invites.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -59,6 +60,7 @@ class _HomePageState extends State<HomePage> {
       //     photoUrl: '',
       //   ),
       // ),
+      // const UserInvitesPage()
     ];
   }
 
@@ -89,6 +91,9 @@ class _HomePageState extends State<HomePage> {
       case 'EventDetailPage':
         _selectedPage = 7;
         break;
+      // case 'UserInvitesPage':
+      //   _selectedPage = 8;
+      //   break;
       default:
         _selectedPage = 0;
         break;
