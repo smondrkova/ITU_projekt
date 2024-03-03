@@ -1,4 +1,5 @@
 # Evento App
+Application for discovering events nearby developed for subject ITU. 
 ## Instalation process:
 
 ### 1. Install Flutter:
