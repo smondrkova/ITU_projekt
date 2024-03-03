@@ -1,5 +1,5 @@
 # Evento App
-Application for discovering events nearby developed for subject ITU. 
+An event discovery application designed for the ITU subject. It enables users to explore various types of events nearby and add them to favorites. Users can also create their own events, invite friends, and rate past events.
 ## Instalation process:
 
 ### 1. Install Flutter:
